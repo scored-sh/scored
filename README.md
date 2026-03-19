@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# scored.sh
 
-## Getting Started
+Every SaaS product CLI scored for AI agent readiness. One score. One grade.
 
-First, run the development server:
+## What is this?
+
+A registry that scores SaaS product CLIs (Stripe, GitHub, Resend, Vercel, etc.) on 10 dimensions of how well they work with AI agents.
+
+Each CLI gets a score out of 100 and a letter grade (S/A/B/C/D/F).
+
+## Scoring Criteria
+
+| Criterion | Max Points |
+|-----------|-----------|
+| JSON Output | 20 |
+| Non-Interactive Mode | 15 |
+| Auth Automation | 15 |
+| Structured Errors | 10 |
+| Agent Ecosystem | 10 |
+| Schema Discovery | 10 |
+| Exit Codes | 5 |
+| Pagination | 5 |
+| Field Selection | 5 |
+| Safety Rails | 5 |
+
+## Submit a CLI
+
+[Open an issue](https://github.com/scored-sh/scored/issues/new?template=submit-cli.yml) with the GitHub repo URL. We audit the CLI and add it to the leaderboard.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## How It Works
+
+- Each CLI is a YAML file in `data/` with booleans and enums
+- Scores are computed at build time by `scripts/score.ts`
+- Contributors submit data, never scores
+- The website reads computed scores from `.generated/`
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Related
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [awesome-product-cli](https://github.com/progrmoiz/awesome-product-cli) — curated list of 55+ SaaS product CLIs
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## License
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

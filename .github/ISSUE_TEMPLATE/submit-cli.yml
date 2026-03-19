@@ -1,0 +1,44 @@
+name: Submit a CLI
+description: Add a SaaS product CLI to scored.sh
+labels: ["new-cli"]
+body:
+  - type: input
+    id: repo
+    attributes:
+      label: GitHub Repository
+      placeholder: "https://github.com/resend/resend-cli"
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: CLI Command Name
+      placeholder: "resend"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Cloud & Infrastructure
+        - Databases
+        - Payments & Finance
+        - Blockchain & Crypto
+        - Data & Web
+        - Communication & Email
+        - Developer Tools
+        - Auth & Identity
+        - CMS & Content
+        - Monitoring & Observability
+        - AI & ML
+        - CI/CD
+        - Search
+        - Infrastructure as Code
+        - Productivity & Workspace
+        - Other
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else?
+      placeholder: "I use this CLI with Claude Code and it works great for..."

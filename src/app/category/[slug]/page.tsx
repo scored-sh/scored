@@ -92,7 +92,7 @@ export default async function CategoryPage({
             Submit a CLI
           </p>
           <a
-            href="https://github.com/progrmoiz/awesome-product-cli"
+            href="https://github.com/scored-sh/scored/issues/new?template=submit-cli.yml"
             target="_blank"
             rel="noopener noreferrer"
             className="block"
@@ -197,7 +197,7 @@ export default async function CategoryPage({
       <div className="flex items-center justify-between mt-16 mb-4 text-xs text-[var(--color-text-faint)] font-mono">
         <span>{clis.length} CLIs in {label}</span>
         <a
-          href="https://github.com/progrmoiz/awesome-product-cli"
+          href="https://github.com/scored-sh/scored"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[var(--color-text-faint)] hover:text-[var(--color-text-tertiary)] transition-colors duration-200"

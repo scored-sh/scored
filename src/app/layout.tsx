@@ -35,7 +35,7 @@ export default function RootLayout({
           </a>
           <div className="flex items-center gap-5">
             <a
-              href="https://github.com/progrmoiz/awesome-product-cli"
+              href="https://github.com/scored-sh/scored"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-mono text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-coral)] transition-colors duration-150"

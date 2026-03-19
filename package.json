@@ -1,9 +1,9 @@
 {
   "name": "scored.sh",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npx tsx scripts/score.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
