@@ -1,0 +1,102 @@
+slug: github-cli
+name: GitHub CLI
+command: gh
+vendor: GitHub
+description: "PRs, issues, repos, releases, actions, codespaces with field-level JSON selection."
+repo: cli/cli
+category: developer-tools
+website: https://github.com
+
+language: go
+license: MIT
+official: true
+
+install:
+  homebrew: gh
+  binary: https://github.com/cli/cli/releases
+  scoop: gh
+  apt: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+
+auth:
+  methods: [oauth_browser, api_key_env, token_file]
+  env_var: GH_TOKEN
+  config_path: "~/.config/gh/config.yml"
+  config_format: yaml
+  headless: true
+  multi_profile: true
+
+json_output:
+  type: flag_json
+  flag: "--json <fields>"
+  field_selection: true
+  jq_builtin: true
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--yes"
+  env_var: GH_PROMPT_DISABLED
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: true
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "2": cancelled
+    "4": auth_required
+
+schema_discovery:
+  help_format: rich
+  introspection_command: null
+  field_docs: true
+  resource_listing: "gh help reference"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: separate_repo
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+tags: [git, source-control, prs, issues, actions, extensions, gold-standard]
+first_release: null
+added_date: "2026-03-19"
+updated_date: "2026-03-19"
+
+notable_commands:
+  - "gh pr list --json number,title,author --jq '.[].title'"
+  - "gh api repos/{owner}/{repo}/pulls"
+  - "gh extension install <owner/repo>"
+  - "gh issue create --title Bug --body Details"
+  - "gh run list --json status,name"
+notable_features:
+  - "Field-level JSON selection: --json field1,field2 with per-command field docs"
+  - "Built-in jq via --jq flag — no external dependency"
+  - "Extension system for infinite extensibility"
+  - "gh api for raw GitHub API access"
+  - "gh agent-task subcommand for agent workflows"
+alternatives: [gitlab-cli]
+related: [sentry-cli]

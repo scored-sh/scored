@@ -1,0 +1,114 @@
+# =============================================================================
+# scored.sh — CLI Entry Template (Full)
+# =============================================================================
+# Copy this file to data/{slug}.yaml and fill in all fields.
+# Scores are NOT stored here — they are computed by scripts/score.ts at build time.
+# Fields marked [ENRICHED] are populated by GitHub API cron, not manually.
+# =============================================================================
+
+# --- REQUIRED: Identity ---
+slug: my-cli                          # URL-friendly ID. Must be kebab-case. File name = {slug}.yaml.
+name: My CLI                          # Human-readable display name
+command: mycli                        # The actual terminal command users type
+vendor: My Company                    # Company or organization name
+description: "Short description of what the CLI does, max 160 characters."
+repo: owner/repo                      # GitHub repo in owner/repo format
+category: developer-tools             # One of 16 categories — see schema/categories.yaml
+website: https://example.com          # Product website URL
+
+# --- REQUIRED: Technical Metadata ---
+language: typescript                  # go | rust | typescript | python | ruby | java | shell | other
+license: MIT                          # SPDX identifier (MIT, Apache-2.0, BSD-3-Clause, etc.)
+official: true                        # Is this the vendor's official CLI?
+
+# --- REQUIRED: Install Methods (at least one must be non-null) ---
+install:
+  npm: null                           # npm package name (e.g., "@org/cli")
+  homebrew: null                      # Homebrew formula (e.g., "gh" or "tap/formula")
+  binary: null                        # URL to GitHub releases or download page
+  curl: null                          # curl install script URL
+  docker: null                        # Docker image name
+  pip: null                           # PyPI package name
+  cargo: null                         # Cargo crate or git URL
+  scoop: null                         # Scoop bucket/package (Windows)
+  nix: null                           # Nix flake reference
+  apt: null                           # apt repo setup URL
+  other: null                         # Any other method with description
+
+# --- REQUIRED: Authentication ---
+auth:
+  methods: []                         # Array of: api_key_env, api_key_flag, oauth_browser,
+                                      #   token_file, service_account, config_file, sso
+  env_var: null                       # Primary auth env var (e.g., "RESEND_API_KEY")
+  config_path: null                   # Config file path (e.g., "~/.config/gh/config.yml")
+  config_format: null                 # json | toml | yaml | ini
+  headless: false                     # Can auth without a browser?
+  multi_profile: false                # Supports multiple accounts/profiles?
+
+# --- REQUIRED: Agent-Readiness Booleans ---
+# These booleans + enums are the SOURCE OF TRUTH for scoring.
+# scripts/score.ts reads these to compute scores at build time.
+
+json_output:
+  type: none                          # default_json | auto_pipe | flag_json | flag_format |
+                                      #   flag_output | partial | none
+  flag: null                          # The actual flag (e.g., "--json", "--format json")
+  field_selection: false              # Can select specific fields? (--json field1,field2)
+  jq_builtin: false                   # Has built-in jq/filter? (gh --jq)
+
+non_interactive:
+  fully_headless: false               # Works completely without human interaction?
+  skip_prompts_flag: null             # Flag to skip prompts (e.g., "--yes", "--confirm")
+  env_var: null                       # Env var to disable prompts (e.g., "GH_PROMPT_DISABLED")
+  auto_detect_tty: false              # Changes behavior when not in a terminal?
+
+errors:
+  structured: false                   # Returns machine-readable error objects?
+  format: null                        # json | text | mixed
+  has_error_codes: false              # Errors include typed codes?
+
+exit_codes:
+  documented: false                   # Are exit codes formally documented?
+  typed: false                        # Different codes for different error types (not just 0/1)?
+  codes: null                         # Map of code to meaning, e.g.: { "0": "success", "1": "error" }
+
+schema_discovery:
+  help_format: standard               # standard | structured | json | rich
+  introspection_command: null         # Runtime schema introspection command
+  field_docs: false                   # Per-command JSON field documentation?
+  resource_listing: null              # Command to list all resources
+
+pagination:
+  supported: false
+  limit_flag: null                    # e.g., "--limit"
+  cursor_flags: null                  # e.g., ["--starting-after", "--ending-before"]
+  auto_paginate: null                 # e.g., "--page-all"
+
+safety:
+  dry_run: false                      # Has --dry-run or preview mode?
+  confirm_skip: null                  # Flag to skip destructive confirmations
+  idempotency: false                  # Supports idempotency keys?
+
+quiet_mode:
+  flag: null                          # e.g., "--quiet", "-q"
+  env_var: null                       # e.g., "MY_CLI_QUIET=1"
+
+agent_ecosystem:
+  skill_md: false                     # Has SKILL.md for agent consumption?
+  skills_count: null                  # Number of published agent skills
+  skills_sh: false                    # Published on skills.sh?
+  mcp_server: none                    # built_in | separate_repo | community | none
+  agents_md: false                    # Has AGENTS.md in repo?
+  claude_md: false                    # Has CLAUDE.md in repo?
+  agent_detection: false              # Detects when called by AI agents?
+
+# --- OPTIONAL: Display & Discovery ---
+tags: []                              # Freeform kebab-case tags for filtering
+first_release: null                   # ISO date of first release (YYYY-MM-DD)
+added_date: "2026-01-01"             # ISO date when added to directory
+updated_date: "2026-01-01"           # ISO date when last reviewed
+
+notable_commands: []                  # 3-5 example commands that showcase strengths
+notable_features: []                  # 3-5 standout features for agents
+alternatives: []                      # Slugs of alternative CLIs (same problem space)
+related: []                           # Slugs of related CLIs (different function, same ecosystem)

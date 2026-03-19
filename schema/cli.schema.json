@@ -1,0 +1,484 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://scored.sh/schema/cli.schema.json",
+  "title": "Product CLI Entry",
+  "description": "Schema for a CLI tool entry in the scored.sh directory. Scores are NOT stored — they are computed at build time by scripts/score.ts.",
+  "type": "object",
+  "required": [
+    "slug",
+    "name",
+    "command",
+    "vendor",
+    "description",
+    "repo",
+    "category",
+    "website",
+    "language",
+    "license",
+    "official",
+    "install",
+    "auth",
+    "json_output",
+    "non_interactive",
+    "errors",
+    "exit_codes",
+    "schema_discovery",
+    "pagination",
+    "safety",
+    "agent_ecosystem",
+    "added_date",
+    "updated_date"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "URL-friendly identifier. Primary key. File name is {slug}.yaml."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name (e.g., 'GitHub CLI')."
+    },
+    "command": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$",
+      "description": "The actual CLI command users type (e.g., 'gh', 'stripe')."
+    },
+    "vendor": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Company or organization name (e.g., 'GitHub', 'Stripe')."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 160,
+      "description": "One-line description, max 160 chars. Used in listings and meta tags."
+    },
+    "repo": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$",
+      "description": "GitHub repo in owner/repo format (e.g., 'cli/cli')."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "cloud-infrastructure",
+        "databases",
+        "payments-finance",
+        "blockchain-crypto",
+        "data-web",
+        "communication-email",
+        "developer-tools",
+        "auth-identity",
+        "cms-content",
+        "monitoring-observability",
+        "ai-ml",
+        "ci-cd",
+        "search",
+        "infrastructure-as-code",
+        "productivity-workspace",
+        "other"
+      ],
+      "description": "Primary category. One of 16 predefined categories."
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Product website URL."
+    },
+    "language": {
+      "type": "string",
+      "enum": ["go", "rust", "typescript", "python", "ruby", "java", "shell", "other"],
+      "description": "Primary implementation language."
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g., 'MIT', 'Apache-2.0')."
+    },
+    "official": {
+      "type": "boolean",
+      "description": "True if this is the vendor's official CLI."
+    },
+    "install": {
+      "type": "object",
+      "description": "Installation methods. At least one must be non-null.",
+      "additionalProperties": false,
+      "properties": {
+        "npm": {
+          "type": ["string", "null"],
+          "description": "npm package name (e.g., '@googleworkspace/cli')."
+        },
+        "homebrew": {
+          "type": ["string", "null"],
+          "description": "Homebrew formula (e.g., 'gh' or 'stripe/stripe-cli/stripe')."
+        },
+        "binary": {
+          "type": ["string", "null"],
+          "description": "URL to releases page or binary download."
+        },
+        "curl": {
+          "type": ["string", "null"],
+          "description": "curl install script URL."
+        },
+        "docker": {
+          "type": ["string", "null"],
+          "description": "Docker image name (e.g., 'stripe/stripe-cli')."
+        },
+        "pip": {
+          "type": ["string", "null"],
+          "description": "PyPI package name."
+        },
+        "cargo": {
+          "type": ["string", "null"],
+          "description": "Cargo crate name or git URL."
+        },
+        "scoop": {
+          "type": ["string", "null"],
+          "description": "Scoop bucket/package."
+        },
+        "nix": {
+          "type": ["string", "null"],
+          "description": "Nix flake reference."
+        },
+        "apt": {
+          "type": ["string", "null"],
+          "description": "apt repo setup instruction or URL."
+        },
+        "other": {
+          "type": ["string", "null"],
+          "description": "Any other install method with description."
+        }
+      },
+      "anyOf": [
+        { "required": ["npm"], "properties": { "npm": { "type": "string" } } },
+        { "required": ["homebrew"], "properties": { "homebrew": { "type": "string" } } },
+        { "required": ["binary"], "properties": { "binary": { "type": "string" } } },
+        { "required": ["curl"], "properties": { "curl": { "type": "string" } } },
+        { "required": ["docker"], "properties": { "docker": { "type": "string" } } },
+        { "required": ["pip"], "properties": { "pip": { "type": "string" } } },
+        { "required": ["cargo"], "properties": { "cargo": { "type": "string" } } },
+        { "required": ["scoop"], "properties": { "scoop": { "type": "string" } } },
+        { "required": ["nix"], "properties": { "nix": { "type": "string" } } },
+        { "required": ["apt"], "properties": { "apt": { "type": "string" } } },
+        { "required": ["other"], "properties": { "other": { "type": "string" } } }
+      ]
+    },
+    "auth": {
+      "type": "object",
+      "required": ["methods", "headless", "multi_profile"],
+      "additionalProperties": false,
+      "description": "Authentication model.",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "api_key_env",
+              "api_key_flag",
+              "oauth_browser",
+              "token_file",
+              "service_account",
+              "config_file",
+              "sso"
+            ]
+          },
+          "minItems": 1,
+          "description": "Supported auth methods."
+        },
+        "env_var": {
+          "type": ["string", "null"],
+          "description": "Primary auth environment variable name (e.g., 'RESEND_API_KEY')."
+        },
+        "config_path": {
+          "type": ["string", "null"],
+          "description": "Config file location (e.g., '~/.config/gh/config.yml')."
+        },
+        "config_format": {
+          "type": ["string", "null"],
+          "enum": ["json", "toml", "yaml", "ini", null],
+          "description": "Config file format."
+        },
+        "headless": {
+          "type": "boolean",
+          "description": "Can authenticate without a browser (env var, token, service account)?"
+        },
+        "multi_profile": {
+          "type": "boolean",
+          "description": "Supports multiple accounts/profiles?"
+        }
+      }
+    },
+    "json_output": {
+      "type": "object",
+      "required": ["type", "field_selection", "jq_builtin"],
+      "additionalProperties": false,
+      "description": "JSON output capabilities — the #1 agent-readiness signal.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "default_json",
+            "auto_pipe",
+            "flag_json",
+            "flag_format",
+            "flag_output",
+            "partial",
+            "none"
+          ],
+          "description": "How the CLI produces JSON output."
+        },
+        "flag": {
+          "type": ["string", "null"],
+          "description": "The actual flag to get JSON (e.g., '--json', '--format json')."
+        },
+        "field_selection": {
+          "type": "boolean",
+          "description": "Can select specific output fields (e.g., --json field1,field2)?"
+        },
+        "jq_builtin": {
+          "type": "boolean",
+          "description": "Has built-in jq/filter support (e.g., gh --jq)?"
+        }
+      }
+    },
+    "non_interactive": {
+      "type": "object",
+      "required": ["fully_headless", "auto_detect_tty"],
+      "additionalProperties": false,
+      "description": "Non-interactive / headless mode capabilities.",
+      "properties": {
+        "fully_headless": {
+          "type": "boolean",
+          "description": "Works completely without human interaction?"
+        },
+        "skip_prompts_flag": {
+          "type": ["string", "null"],
+          "description": "Flag to skip interactive prompts (e.g., '--yes', '--confirm')."
+        },
+        "env_var": {
+          "type": ["string", "null"],
+          "description": "Env var to disable prompts (e.g., 'GH_PROMPT_DISABLED')."
+        },
+        "auto_detect_tty": {
+          "type": "boolean",
+          "description": "Automatically changes behavior when not in a terminal?"
+        }
+      }
+    },
+    "errors": {
+      "type": "object",
+      "required": ["structured", "has_error_codes"],
+      "additionalProperties": false,
+      "description": "Error output format.",
+      "properties": {
+        "structured": {
+          "type": "boolean",
+          "description": "Returns machine-readable error objects (not just text)?"
+        },
+        "format": {
+          "type": ["string", "null"],
+          "enum": ["json", "text", "mixed", null],
+          "description": "Error output format."
+        },
+        "has_error_codes": {
+          "type": "boolean",
+          "description": "Errors include typed error codes?"
+        }
+      }
+    },
+    "exit_codes": {
+      "type": "object",
+      "required": ["documented", "typed"],
+      "additionalProperties": false,
+      "description": "Exit code documentation and typing.",
+      "properties": {
+        "documented": {
+          "type": "boolean",
+          "description": "Are exit codes formally documented?"
+        },
+        "typed": {
+          "type": "boolean",
+          "description": "Different exit codes for different error types (not just 0/1)?"
+        },
+        "codes": {
+          "type": ["object", "null"],
+          "description": "Map of exit code number to meaning (e.g., { '0': 'success', '1': 'error' }).",
+          "patternProperties": {
+            "^[0-9]+$": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "schema_discovery": {
+      "type": "object",
+      "required": ["help_format", "field_docs"],
+      "additionalProperties": false,
+      "description": "How agents can discover CLI capabilities programmatically.",
+      "properties": {
+        "help_format": {
+          "type": "string",
+          "enum": ["standard", "structured", "json", "rich"],
+          "description": "Quality of --help output."
+        },
+        "introspection_command": {
+          "type": ["string", "null"],
+          "description": "Command to inspect schema at runtime (e.g., 'gws schema')."
+        },
+        "field_docs": {
+          "type": "boolean",
+          "description": "Per-command documentation of available JSON fields?"
+        },
+        "resource_listing": {
+          "type": ["string", "null"],
+          "description": "Command to list all available resources (e.g., 'stripe resources')."
+        }
+      }
+    },
+    "pagination": {
+      "type": "object",
+      "required": ["supported"],
+      "additionalProperties": false,
+      "description": "Pagination support for list operations.",
+      "properties": {
+        "supported": {
+          "type": "boolean",
+          "description": "Supports pagination on list commands?"
+        },
+        "limit_flag": {
+          "type": ["string", "null"],
+          "description": "Flag to limit results (e.g., '--limit')."
+        },
+        "cursor_flags": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "Cursor-based pagination flags (e.g., ['--starting-after', '--ending-before'])."
+        },
+        "auto_paginate": {
+          "type": ["string", "null"],
+          "description": "Flag for automatic full pagination (e.g., '--page-all')."
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": ["dry_run", "idempotency"],
+      "additionalProperties": false,
+      "description": "Safety rails for agent usage.",
+      "properties": {
+        "dry_run": {
+          "type": "boolean",
+          "description": "Has --dry-run or equivalent preview flag?"
+        },
+        "confirm_skip": {
+          "type": ["string", "null"],
+          "description": "Flag to skip destructive operation confirmations."
+        },
+        "idempotency": {
+          "type": "boolean",
+          "description": "Supports idempotency keys?"
+        }
+      }
+    },
+    "quiet_mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Quiet / silent mode to suppress non-essential output.",
+      "properties": {
+        "flag": {
+          "type": ["string", "null"],
+          "description": "Quiet flag (e.g., '--quiet', '-q')."
+        },
+        "env_var": {
+          "type": ["string", "null"],
+          "description": "Env var for quiet mode."
+        }
+      }
+    },
+    "agent_ecosystem": {
+      "type": "object",
+      "required": ["skill_md", "skills_sh", "mcp_server", "agents_md", "claude_md", "agent_detection"],
+      "additionalProperties": false,
+      "description": "Agent ecosystem presence and integrations.",
+      "properties": {
+        "skill_md": {
+          "type": "boolean",
+          "description": "Has SKILL.md files for agent consumption?"
+        },
+        "skills_count": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Number of published agent skills."
+        },
+        "skills_sh": {
+          "type": "boolean",
+          "description": "Published on skills.sh?"
+        },
+        "mcp_server": {
+          "type": "string",
+          "enum": ["built_in", "separate_repo", "community", "none"],
+          "description": "MCP server availability."
+        },
+        "agents_md": {
+          "type": "boolean",
+          "description": "Has AGENTS.md in repo?"
+        },
+        "claude_md": {
+          "type": "boolean",
+          "description": "Has CLAUDE.md in repo?"
+        },
+        "agent_detection": {
+          "type": "boolean",
+          "description": "Detects when called by AI agents?"
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+      "description": "Freeform kebab-case tags for filtering."
+    },
+    "first_release": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "ISO date of first release."
+    },
+    "added_date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date when added to the directory."
+    },
+    "updated_date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date when this entry was last reviewed/updated."
+    },
+    "notable_commands": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 5,
+      "description": "3-5 key commands that showcase the CLI's strengths."
+    },
+    "notable_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 5,
+      "description": "3-5 standout features for agent consumption."
+    },
+    "alternatives": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+      "description": "Slugs of alternative CLIs that solve the same problem."
+    },
+    "related": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+      "description": "Slugs of related CLIs (different function, same ecosystem)."
+    }
+  }
+}

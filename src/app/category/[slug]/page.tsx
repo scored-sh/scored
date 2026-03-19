@@ -1,5 +1,26 @@
 import { getAllCLIs, getCategories, GRADE_STYLES } from "@/lib/data";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+const CATEGORY_LABELS: Record<string, string> = {
+  "cloud-infrastructure": "Cloud & Infrastructure",
+  "databases": "Databases",
+  "payments-finance": "Payments & Finance",
+  "blockchain-crypto": "Blockchain & Crypto",
+  "data-web": "Data & Web",
+  "communication-email": "Communication & Email",
+  "developer-tools": "Developer Tools",
+  "auth-identity": "Auth & Identity",
+  "cms-content": "CMS & Content",
+  "monitoring-observability": "Monitoring & Observability",
+  "ai-ml": "AI & ML",
+  "ci-cd": "CI/CD",
+  "search": "Search",
+  "infrastructure-as-code": "Infrastructure as Code",
+  "productivity-workspace": "Productivity & Workspace",
+  "other": "Other",
+};
 
 const SCORING_DIMENSIONS = [
   "JSON Output",
@@ -14,15 +35,41 @@ const SCORING_DIMENSIONS = [
   "Agent Ecosystem",
 ];
 
-export default function Home() {
-  const clis = getAllCLIs();
+export async function generateStaticParams() {
   const categories = getCategories();
+  return categories.map((cat) => ({ slug: cat.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const label = CATEGORY_LABELS[slug] || slug;
+  return {
+    title: `${label} CLIs — scored.sh`,
+    description: `SaaS product CLIs in ${label}, scored for AI agent readiness.`,
+  };
+}
+
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const allCLIs = getAllCLIs();
+  const categories = getCategories();
+  const clis = allCLIs.filter((cli) => cli.category === slug);
+  const label = CATEGORY_LABELS[slug] || slug;
+
+  if (clis.length === 0) notFound();
 
   return (
     <div>
       {/* ── Hero ── */}
       <header className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-4 mb-16">
-        {/* Left: ASCII art logo + subtitle */}
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="SCORED" className="w-full max-w-[480px] select-none" draggable={false} />
@@ -30,8 +77,6 @@ export default function Home() {
             SaaS CLIs scored for AI agents
           </p>
         </div>
-
-        {/* Right: Description — sans prose */}
         <div className="flex items-end">
           <p className="text-xl text-[var(--color-text-secondary)] leading-relaxed">
             Every SaaS product CLI rated on 10 dimensions of agent readiness.
@@ -42,7 +87,6 @@ export default function Home() {
 
       {/* ── Submit + Scored On ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
-        {/* Left: Submit */}
         <div>
           <p className="text-[11px] tracking-[0.2em] uppercase text-[var(--color-text-tertiary)] mb-4 font-mono font-medium">
             Submit a CLI
@@ -64,8 +108,6 @@ export default function Home() {
             </div>
           </a>
         </div>
-
-        {/* Right: Scoring dimensions */}
         <div>
           <p className="text-[11px] tracking-[0.2em] uppercase text-[var(--color-text-tertiary)] mb-4 font-mono font-medium">
             Scored on
@@ -93,22 +135,26 @@ export default function Home() {
         <div className="flex gap-4 mb-4 font-mono text-sm overflow-x-auto scrollbar-none">
           <Link
             href="/"
-            className="pb-1 border-b-2 transition-colors duration-200 border-[var(--color-text-primary)] text-[var(--color-text-primary)] whitespace-nowrap shrink-0"
+            className="pb-1 border-b-2 transition-colors duration-200 border-transparent text-[var(--color-text-faint)] hover:text-[var(--color-text-primary)] whitespace-nowrap shrink-0"
           >
-            All ({clis.length})
+            All ({allCLIs.length})
           </Link>
           {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className="pb-1 border-b-2 transition-colors duration-200 border-transparent text-[var(--color-text-faint)] hover:text-[var(--color-text-primary)] whitespace-nowrap shrink-0"
+              className={`pb-1 border-b-2 transition-colors duration-200 whitespace-nowrap shrink-0 ${
+                cat.slug === slug
+                  ? "border-[var(--color-text-primary)] text-[var(--color-text-primary)]"
+                  : "border-transparent text-[var(--color-text-faint)] hover:text-[var(--color-text-primary)]"
+              }`}
             >
               {cat.name} ({cat.count})
             </Link>
           ))}
         </div>
 
-        {/* Table header — hidden on mobile, 16-col grid on desktop */}
+        {/* Table header */}
         <div className="hidden lg:grid grid-cols-16 gap-4 border-b border-[var(--color-border-default)] py-3 text-sm font-medium uppercase text-[var(--color-text-faint)] font-mono">
           <div className="col-span-1">#</div>
           <div className="col-span-13">CLI</div>
@@ -117,44 +163,39 @@ export default function Home() {
 
         {/* Rows */}
         <div>
-        {clis.map((cli, i) => {
-          const style = GRADE_STYLES[cli.grade] || GRADE_STYLES.F;
-          return (
-            <Link
-              key={cli.slug}
-              href={`/cli/${cli.slug}`}
-              className="group grid grid-cols-[auto_1fr_auto] lg:grid-cols-16 items-start lg:items-center gap-3 lg:gap-4 py-3 hover:bg-[var(--color-surface-1)]/30 border-b border-[var(--color-border-subtle)] transition-colors duration-200"
-            >
-              {/* Rank */}
-              <div className="lg:col-span-1 text-left">
-                <span className="text-sm lg:text-base text-[var(--color-text-faint)] font-mono">{i + 1}</span>
-              </div>
-
-              {/* Name + Vendor */}
-              <div className="lg:col-span-13 min-w-0 flex flex-col lg:flex-row lg:items-baseline lg:gap-2">
-                <h3 className="font-semibold text-[var(--color-text-primary)] truncate whitespace-nowrap group-hover:text-[var(--color-accent-coral)] transition-colors duration-200">
-                  {cli.name}
-                </h3>
-                <p className="text-xs lg:text-sm text-[var(--color-text-faint)] font-mono mt-0.5 lg:mt-0 truncate">
-                  {cli.vendor}
-                </p>
-              </div>
-
-              {/* Grade */}
-              <div className="lg:col-span-2 text-right">
-                <span className={`font-mono text-sm font-bold ${style.text}`}>
-                  {cli.grade}
-                </span>
-              </div>
-            </Link>
-          );
-        })}
+          {clis.map((cli, i) => {
+            const style = GRADE_STYLES[cli.grade] || GRADE_STYLES.F;
+            return (
+              <Link
+                key={cli.slug}
+                href={`/cli/${cli.slug}`}
+                className="group grid grid-cols-[auto_1fr_auto] lg:grid-cols-16 items-start lg:items-center gap-3 lg:gap-4 py-3 hover:bg-[var(--color-surface-1)]/30 border-b border-[var(--color-border-subtle)] transition-colors duration-200"
+              >
+                <div className="lg:col-span-1 text-left">
+                  <span className="text-sm lg:text-base text-[var(--color-text-faint)] font-mono">{i + 1}</span>
+                </div>
+                <div className="lg:col-span-13 min-w-0 flex flex-col lg:flex-row lg:items-baseline lg:gap-2">
+                  <h3 className="font-semibold text-[var(--color-text-primary)] truncate whitespace-nowrap group-hover:text-[var(--color-accent-coral)] transition-colors duration-200">
+                    {cli.name}
+                  </h3>
+                  <p className="text-xs lg:text-sm text-[var(--color-text-faint)] font-mono mt-0.5 lg:mt-0 truncate">
+                    {cli.vendor}
+                  </p>
+                </div>
+                <div className="lg:col-span-2 text-right">
+                  <span className={`font-mono text-sm font-bold ${style.text}`}>
+                    {cli.grade}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
       {/* ── Footer ── */}
       <div className="flex items-center justify-between mt-16 mb-4 text-xs text-[var(--color-text-faint)] font-mono">
-        <span>{clis.length} CLIs scored</span>
+        <span>{clis.length} CLIs in {label}</span>
         <a
           href="https://github.com/progrmoiz/awesome-product-cli"
           target="_blank"

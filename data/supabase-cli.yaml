@@ -1,0 +1,101 @@
+slug: supabase-cli
+name: Supabase CLI
+command: supabase
+vendor: Supabase
+description: "Run Supabase locally, manage migrations, deploy edge functions, and generate types."
+repo: supabase/cli
+category: databases
+website: https://supabase.com
+
+language: go
+license: MIT
+official: true
+
+install:
+  npm: supabase
+  homebrew: supabase/tap/supabase
+  scoop: supabase
+  binary: https://github.com/supabase/cli/releases
+  apt: https://github.com/supabase/cli/releases
+
+auth:
+  methods: [oauth_browser, api_key_flag, token_file]
+  env_var: null
+  config_path: null
+  config_format: toml
+  headless: true
+  multi_profile: false
+
+json_output:
+  type: partial
+  flag: null
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: false
+  skip_prompts_flag: null
+  env_var: null
+  auto_detect_tty: false
+
+errors:
+  structured: false
+  format: mixed
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: false
+  resource_listing: "supabase --help"
+
+pagination:
+  supported: false
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  confirm_skip: null
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: true
+  mcp_server: separate_repo
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+tags: [postgres, database, migrations, edge-functions, types, baas]
+first_release: null
+added_date: "2026-03-19"
+updated_date: "2026-03-19"
+
+notable_commands:
+  - "supabase db diff --local"
+  - "supabase gen types typescript --local"
+  - "supabase functions deploy <function-name>"
+  - "supabase migration new <name>"
+  - "supabase inspect db"
+notable_features:
+  - "Full local development stack (Postgres, Auth, Storage, Edge Functions)"
+  - "Type generation from database schema"
+  - "Migration management with diff, squash, and repair"
+  - "Edge function deployment"
+  - "Database inspection and advisor commands"
+alternatives: [firebase-cli, convex-cli, neon-cli]
+related: [prisma-cli]

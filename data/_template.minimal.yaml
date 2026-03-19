@@ -1,0 +1,65 @@
+# =============================================================================
+# scored.sh — CLI Entry Template (Minimal)
+# =============================================================================
+# Only the required fields. Use _template.yaml for the full version.
+# =============================================================================
+
+slug: my-cli
+name: My CLI
+command: mycli
+vendor: My Company
+description: "Short description, max 160 characters."
+repo: owner/repo
+category: developer-tools
+website: https://example.com
+
+language: typescript
+license: MIT
+official: true
+
+install:
+  npm: my-cli
+
+auth:
+  methods: [api_key_env]
+  headless: true
+  multi_profile: false
+
+json_output:
+  type: none
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: false
+  auto_detect_tty: false
+
+errors:
+  structured: false
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+
+schema_discovery:
+  help_format: standard
+  field_docs: false
+
+pagination:
+  supported: false
+
+safety:
+  dry_run: false
+  idempotency: false
+
+agent_ecosystem:
+  skill_md: false
+  skills_sh: false
+  mcp_server: none
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+added_date: "2026-01-01"
+updated_date: "2026-01-01"

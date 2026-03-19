@@ -1,0 +1,84 @@
+# scored.sh — Category Definitions
+# 16 categories covering the SaaS CLI landscape.
+# Slugs must be kebab-case. Used as enum values in cli.schema.json.
+
+categories:
+  - slug: cloud-infrastructure
+    label: Cloud & Infrastructure
+    description: Hosting, deployment, serverless, edge, CDN
+    examples: Vercel, Netlify, Railway, Fly.io, AWS, GCP, Azure
+
+  - slug: databases
+    label: Databases
+    description: Database management, migrations, branching, local dev
+    examples: Supabase, PlanetScale, Turso, Neon, MongoDB Atlas
+
+  - slug: payments-finance
+    label: Payments & Finance
+    description: Payment processing, billing, invoicing, fintech
+    examples: Stripe
+
+  - slug: blockchain-crypto
+    label: Blockchain & Crypto
+    description: Exchanges, DeFi, wallets, on-chain tools
+    examples: Kraken, Hyperliquid
+
+  - slug: data-web
+    label: Data & Web
+    description: Web scraping, data enrichment, analytics
+    examples: Nansen, Firecrawl
+
+  - slug: communication-email
+    label: Communication & Email
+    description: Email, SMS, messaging, notifications
+    examples: Resend, Twilio, Postmark, Slack
+
+  - slug: developer-tools
+    label: Developer Tools
+    description: Source control, error tracking, secrets, CLI utilities
+    examples: GitHub, GitLab, Sentry, Doppler, Vault, 1Password
+
+  - slug: auth-identity
+    label: Auth & Identity
+    description: Authentication, authorization, identity providers
+    examples: Auth0, Clerk, WorkOS
+
+  - slug: cms-content
+    label: CMS & Content
+    description: Content management, headless CMS, content APIs
+    examples: Sanity, Contentful, Strapi, Payload
+
+  - slug: monitoring-observability
+    label: Monitoring & Observability
+    description: APM, logging, metrics, tracing
+    examples: Datadog, Grafana, Axiom
+
+  - slug: ai-ml
+    label: AI & ML
+    description: LLMs, model hosting, inference, training
+    examples: OpenAI, Replicate, HuggingFace
+
+  - slug: ci-cd
+    label: CI/CD
+    description: Continuous integration, deployment pipelines
+    examples: CircleCI, Buildkite
+
+  - slug: search
+    label: Search
+    description: Search engines, indexing, relevance
+    examples: Algolia, Meilisearch, Typesense
+
+  - slug: infrastructure-as-code
+    label: Infrastructure as Code
+    description: IaC, provisioning, configuration management
+    examples: Terraform, Pulumi
+
+  - slug: productivity-workspace
+    label: Productivity & Workspace
+    description: Office suites, project management, collaboration
+    examples: Google Workspace
+
+  - slug: other
+    label: Other
+    description: CLIs that don't fit other categories
+    examples: Expo, Prisma, Cloudinary
