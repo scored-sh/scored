@@ -1,0 +1,125 @@
+# =============================================================================
+# scored.sh — CLI Entry: Netlify CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: netlify/cli repo at /tmp/cli-audit-netlify + npx netlify-cli@24.3.0
+# =============================================================================
+
+# --- Identity ---
+slug: netlify-cli
+name: Netlify CLI
+command: netlify
+vendor: Netlify
+description: "Deploy and manage Netlify projects from the terminal — sites, functions, env vars, blobs, builds, and AI agents."
+repo: netlify/cli
+category: cloud-infrastructure
+website: https://www.netlify.com
+
+# --- Technical Metadata ---
+language: typescript
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: netlify-cli
+  homebrew: netlify-cli
+  binary: null
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: null
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: NETLIFY_AUTH_TOKEN
+  config_path: "~/.netlify/config.json"
+  config_format: json
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--force"
+  env_var: CI
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: "netlify api --list"
+  field_docs: true
+  resource_listing: "netlify api --list"
+
+pagination:
+  supported: false
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: true
+  force_flag: true
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: "--silent"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none
+  agents_md: false
+  claude_md: true
+  agent_detection: true
+
+# --- Display & Discovery ---
+tags: [netlify, deployment, serverless, jamstack, devops, ci-cd, hosting, edge-functions]
+first_release: "2018-07-10"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "netlify deploy --prod --auth $NETLIFY_AUTH_TOKEN"
+  - "netlify sites:list --json"
+  - "netlify env:list --context production --json"
+  - "netlify api getSite --data '{\"site_id\": \"your-site-id\"}'"
+  - "netlify agents:create --prompt 'Fix the login bug' --agent claude"
+
+notable_features:
+  - "NETLIFY_AUTH_TOKEN env var for zero-config headless auth in CI"
+  - "Auto-injects --force flag in CI/non-TTY environments (scripted-commands detection)"
+  - "netlify api command provides raw API access with auto-discovery via --list"
+  - "Agent-friendly login: --request creates a ticket, --check polls for completion"
+  - "netlify agents:create runs AI coding agents (Claude, Codex, Gemini) on Netlify infra"
+  - "netlify recipes ai-context installs IDE context files (Cursor, Windsurf, etc.)"
+
+alternatives: []
+related: [github-cli]

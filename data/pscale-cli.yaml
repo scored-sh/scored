@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: PlanetScale CLI (pscale)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: planetscale/cli repo at /tmp/cli-audit-pscale + installed pscale v0.241.0
+# =============================================================================
+
+# --- Identity ---
+slug: pscale-cli
+name: PlanetScale CLI
+command: pscale
+vendor: PlanetScale
+description: "Manage PlanetScale databases, branches, and deploy requests from the terminal — with full branching workflow support."
+repo: planetscale/cli
+category: databases
+website: https://planetscale.com
+
+# --- Technical Metadata ---
+language: go
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: planetscale/tap/pscale
+  binary: https://github.com/planetscale/cli/releases
+  curl: null
+  docker: planetscale/pscale
+  pip: null
+  cargo: null
+  scoop: "pscale (bucket: https://github.com/planetscale/scoop-bucket.git)"
+  nix: null
+  apt: null
+  other: null
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, token_file, config_file]
+  env_var: PLANETSCALE_SERVICE_TOKEN
+  config_path: "~/.config/planetscale/pscale.yml"
+  config_format: yaml
+  headless: true
+  multi_profile: false
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--format json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--force"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: true
+  format: json
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: true
+  codes:
+    "0": success
+    "1": action_required
+    "2": fatal_error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: false
+  resource_listing: null
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: ["--page", "--per-page"]
+  auto_paginate: null
+
+safety:
+  dry_run: true
+  force_flag: true
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: built_in
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [databases, planetscale, mysql, branching, vitess, deploy-requests, schema-migrations]
+first_release: "2021-02-09"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "pscale database list --format json"
+  - "pscale deploy-request list mydb --format json"
+  - "pscale branch create mydb feature-branch --format json"
+  - "pscale database delete mydb --force"
+  - "PLANETSCALE_SERVICE_TOKEN_ID=xxx PLANETSCALE_SERVICE_TOKEN=yyy pscale database list --org myorg"
+
+notable_features:
+  - "--format flag supports human, json, and csv output on all resource commands"
+  - "Service token auth via PLANETSCALE_SERVICE_TOKEN_ID + PLANETSCALE_SERVICE_TOKEN env vars — fully headless"
+  - "TTY detection: destructive commands refuse to run non-interactively without --force"
+  - "JSON errors when --format json is set (e.g., {\"error\": \"...\"})"
+  - "Built-in MCP server (pscale mcp server) — deprecated in favor of official PlanetScale MCP"
+  - "--dry-run support on Vitess move-tables commands"
+
+alternatives: []
+related: []

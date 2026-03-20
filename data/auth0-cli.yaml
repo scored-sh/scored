@@ -1,0 +1,125 @@
+# =============================================================================
+# scored.sh — CLI Entry: Auth0 CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: auth0/auth0-cli repo at /tmp/cli-audit-auth0 (depth 1 clone)
+# =============================================================================
+
+# --- Identity ---
+slug: auth0-cli
+name: Auth0 CLI
+command: auth0
+vendor: Auth0 (Okta)
+description: "Build, manage and test Auth0 integrations from the command line — apps, APIs, roles, users, logs, and tenants."
+repo: auth0/auth0-cli
+category: auth-identity
+website: https://auth0.com
+
+# --- Technical Metadata ---
+language: go
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: "auth0/auth0-cli/auth0"
+  binary: https://github.com/auth0/auth0-cli/releases
+  curl: https://raw.githubusercontent.com/auth0/auth0-cli/main/install.sh
+  docker: null
+  pip: null
+  cargo: null
+  scoop: "auth0 (via scoop bucket add auth0 https://github.com/auth0/scoop-auth0-cli.git)"
+  nix: null
+  apt: null
+  other: "Go: go install github.com/auth0/auth0-cli/cmd/auth0@latest"
+
+# --- Authentication ---
+auth:
+  methods: [oauth_browser, service_account, config_file]
+  env_var: null
+  config_path: "~/.config/auth0/config.json"
+  config_format: json
+  headless: true                # auth0 login --domain <d> --client-id <id> --client-secret <s> works non-interactively
+  multi_profile: true           # multiple tenants stored; switch with --tenant or auth0 tenants use
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag                    # --json flag on list/show/create/update commands; --json-compact variant also available
+  flag: "--json"
+  field_selection: false        # no field selection (outputs full object); --json-compact omits whitespace only
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true          # --no-input (global persistent flag) disables all prompts
+  skip_prompts_flag: "--no-input"
+  env_var: null                 # no env var equivalent; only --no-input flag
+  auto_detect_tty: true         # uses go-isatty; canPrompt() checks IsInputTerminal && IsOutputTerminal
+
+errors:
+  structured: false             # errors rendered as styled plain text via renderErrorMessage; no JSON error objects
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false             # no formal exit code documentation found
+  typed: false                  # only 0 (success) and 1 (error) observed in source
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard         # Cobra-generated help text; standard --help on all subcommands
+  introspection_command: null
+  field_docs: false
+  resource_listing: "auth0 --help"
+
+pagination:
+  supported: true
+  limit_flag: "--number"        # -n shorthand; available on apps, roles, users, logs, apis, orgs list commands
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  force_flag: true              # --force on all delete commands and destructive ops (skips confirmation prompt)
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: null                    # no --quiet flag; --no-color disables ANSI only
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none              # no MCP server found in repo or known community servers
+  agents_md: false
+  claude_md: false
+  agent_detection: false        # no CI/agent env detection; TTY detection only
+
+# --- Display & Discovery ---
+tags: [auth0, okta, authentication, identity, oauth, iam, access-management]
+first_release: "2023-01-20"    # v1.0.0-beta.1 (Jan 20, 2023); v1.0.0 stable Apr 14, 2023
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "auth0 apps list --json | jq '.[].name'"
+  - "auth0 login --domain tenant.auth0.com --client-id $ID --client-secret $SECRET"
+  - "auth0 users search -q email:user@example.com --json --number 50"
+  - "auth0 roles delete <role-id> --force"
+  - "auth0 api get /api/v2/clients --data '{\"fields\":\"client_id,name\"}'"
+
+notable_features:
+  - "--json flag on all CRUD commands for machine-readable output"
+  - "--no-input global flag disables all interactive prompts for CI/headless use"
+  - "Machine login via --client-id + --client-secret (client credentials flow) — no browser required"
+  - "Multi-tenant: store multiple Auth0 tenants and switch with --tenant flag"
+  - "--force flag on all destructive ops skips confirmation prompts for automation"
+  - "auth0 api command for raw Management API access with pretty-printed JSON output"
+
+alternatives: []
+related: []

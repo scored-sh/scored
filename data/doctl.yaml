@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: DigitalOcean CLI (doctl)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: digitalocean/doctl repo at /tmp/cli-audit-doctl + installed doctl v1.152.0-release
+# =============================================================================
+
+# --- Identity ---
+slug: doctl
+name: DigitalOcean CLI
+command: doctl
+vendor: DigitalOcean
+description: "Command-line interface for the DigitalOcean API — manage Droplets, apps, databases, Kubernetes, serverless, and more."
+repo: digitalocean/doctl
+category: cloud-infrastructure
+website: https://www.digitalocean.com
+
+# --- Technical Metadata ---
+language: go
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: doctl
+  binary: https://github.com/digitalocean/doctl/releases
+  curl: null
+  docker: digitalocean/doctl
+  pip: null
+  cargo: null
+  scoop: null
+  nix: nixpkgs#doctl
+  apt: null
+  other: "Snap: sudo snap install doctl | Arch: sudo pacman -S doctl | Fedora: sudo dnf install doctl"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, config_file]
+  env_var: DIGITALOCEAN_ACCESS_TOKEN
+  config_path: "~/.config/doctl/config.yaml"
+  config_format: yaml
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "-o json"
+  field_selection: true
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--force"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: true
+  format: mixed
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "255": unknown_flag_or_parse_error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: true
+  resource_listing: "doctl --help"
+
+pagination:
+  supported: true
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  force_flag: true
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: "--no-header"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [digitalocean, cloud, droplets, kubernetes, serverless, databases, apps, infrastructure]
+first_release: "2016-04-14"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "doctl compute droplet list -o json"
+  - "doctl apps list -o json"
+  - "doctl databases list -o json"
+  - "doctl compute droplet delete <id> --force"
+  - "DIGITALOCEAN_ACCESS_TOKEN=<token> doctl compute region list -o json"
+
+notable_features:
+  - "JSON output via -o json on all list/get commands — errors also return JSON when -o json is set"
+  - "DIGITALOCEAN_ACCESS_TOKEN env var for zero-config headless auth"
+  - "--interactive flag defaults to false outside TTY — fully safe for agent pipelines"
+  - "Multi-account support via named auth contexts (--context flag or DIGITALOCEAN_CONTEXT env var)"
+  - "Gradient AI subcommand for managing DigitalOcean's AI agent and inference platform"
+  - "--format flag for column selection in text output; --no-header for raw data"
+
+alternatives: []
+related: []

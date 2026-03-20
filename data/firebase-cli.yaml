@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Firebase CLI (firebase)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: firebase/firebase-tools repo at /tmp/cli-audit-firebase + npx firebase-tools@latest v15.11.0
+# =============================================================================
+
+# --- Identity ---
+slug: firebase-cli
+name: Firebase CLI
+command: firebase
+vendor: Google
+description: "Deploy and manage Firebase projects from the terminal — hosting, functions, Firestore, auth, and more."
+repo: firebase/firebase-tools
+category: cloud-infrastructure
+website: https://firebase.google.com
+
+# --- Technical Metadata ---
+language: typescript
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: firebase-tools
+  homebrew: null
+  binary: https://firebase.tools
+  curl: "curl -sL firebase.tools | bash"
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: null
+
+# --- Authentication ---
+auth:
+  methods: [oauth_browser, service_account, token_file, api_key_env]
+  env_var: GOOGLE_APPLICATION_CREDENTIALS
+  config_path: "~/.config/configstore/firebase-tools.json"
+  config_format: json
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--non-interactive"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: true
+  format: json
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: true
+  codes:
+    "0": success
+    "1": user_error
+    "2": unexpected_error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: "firebase --help"
+  field_docs: false
+  resource_listing: "firebase --help"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: ["--pageToken"]
+  auto_paginate: null
+
+safety:
+  dry_run: true
+  force_flag: true
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: built_in
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [firebase, google, hosting, functions, firestore, auth, realtime-database, cloud, mcp]
+first_release: null
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "firebase --json projects:list"
+  - "firebase deploy --only hosting --non-interactive"
+  - "firebase deploy --dry-run"
+  - "firebase --json functions:list -P my-project"
+  - "firebase mcp  # start built-in MCP server"
+
+notable_features:
+  - "--json flag wraps all output in {status, result} or {status, error} JSON envelope"
+  - "Built-in MCP server (firebase mcp) — works with Claude Code, Cursor, Gemini CLI, and more"
+  - "--non-interactive flag + TTY auto-detection for headless CI use"
+  - "GOOGLE_APPLICATION_CREDENTIALS for service account auth — zero browser needed"
+  - "--dry-run on deploy validates and builds without pushing changes"
+  - "--only <targets> for selective deploys (hosting, functions, firestore, etc.)"
+
+alternatives: []
+related: [vercel-cli, supabase-cli, fly-cli]
