@@ -1,0 +1,124 @@
+# =============================================================================
+# scored.sh — CLI Entry: Turso CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: tursodatabase/turso-cli repo at /tmp/cli-audit-turso + GitHub API
+# =============================================================================
+
+# --- Identity ---
+slug: turso-cli
+name: Turso CLI
+command: turso
+vendor: Turso
+description: "Official CLI for Turso (libSQL) — manage databases, groups, auth, and run SQL from the terminal."
+repo: tursodatabase/turso-cli
+category: databases
+website: https://turso.tech
+
+# --- Technical Metadata ---
+language: go
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: tursodatabase/tap/turso
+  binary: https://github.com/tursodatabase/turso-cli/releases
+  curl: https://get.tur.so/install.sh
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "Go: go install github.com/tursodatabase/turso-cli/cmd/turso@latest"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, oauth_browser, config_file]
+  env_var: TURSO_API_TOKEN
+  config_path: "~/Library/Application Support/turso/settings.json"
+  config_format: json
+  headless: true   # turso auth login --headless prints a URL instead of opening browser
+  multi_profile: false
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: none        # No --json or --format flag found. Output is plain text tables.
+  flag: null
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true   # TTY-detected: non-interactive mode auto-paginate + no prompts
+  skip_prompts_flag: "--yes"   # Present on db destroy, group destroy, group update, etc.
+  env_var: null
+  auto_detect_tty: true   # isInteractive() checks both stdin and stdout; changes behavior
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard   # Cobra default help, no structured/JSON help
+  introspection_command: null
+  field_docs: false
+  resource_listing: "turso db list"
+
+pagination:
+  supported: true    # cursor-based pagination in db list; auto-paginate in non-interactive mode
+  limit_flag: null   # no user-facing --limit flag for db list (internal page size only)
+  cursor_flags: null # cursor is internal, not user-exposed
+  auto_paginate: null  # auto-paginate kicks in automatically when non-interactive (TTY detection)
+
+safety:
+  dry_run: false
+  force_flag: true    # --yes/-y on destroy and group destroy commands
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none    # No MCP server found in repo or official references
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [database, sqlite, libsql, edge, distributed, serverless]
+first_release: "2022-10-01"   # earliest releases not in API page; first public GitHub commits ~late 2022
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "TURSO_API_TOKEN=<token> turso db list"
+  - "turso db create my-db --location iad"
+  - "turso db shell my-db \"SELECT * FROM users LIMIT 10;\""
+  - "turso db destroy my-db --yes"
+  - "turso auth login --headless"
+
+notable_features:
+  - "TURSO_API_TOKEN env var for headless CI/CD auth without interactive login"
+  - "TTY auto-detection: non-interactive mode auto-paginates db list (no keypress needed)"
+  - "--yes flag on destructive commands (destroy, group destroy) for automation"
+  - "--headless flag on auth login/signup: prints a URL for environments without a browser"
+  - "turso db shell <name> <sql> — run one-off SQL queries non-interactively"
+
+alternatives: []
+related: []

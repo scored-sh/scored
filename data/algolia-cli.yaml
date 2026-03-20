@@ -1,0 +1,128 @@
+# =============================================================================
+# scored.sh — CLI Entry: Algolia CLI (algolia)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: algolia/cli repo at /tmp/cli-audit-algolia (depth-1 clone)
+# =============================================================================
+
+# --- Identity ---
+slug: algolia-cli
+name: Algolia CLI
+command: algolia
+vendor: Algolia
+description: "Official CLI for Algolia — manage indices, records, API keys, rules, synonyms, settings, and crawlers from the terminal."
+repo: algolia/cli
+category: search
+website: https://www.algolia.com
+
+# --- Technical Metadata ---
+language: go
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: algolia/algolia-cli/algolia
+  binary: https://github.com/algolia/cli/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "Chocolatey: choco install algolia; .deb/.rpm packages on releases page"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: ALGOLIA_APPLICATION_ID
+  config_path: "~/.config/algolia/config.toml"
+  config_format: toml
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--output json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--confirm"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: true
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "2": user_cancelled
+    "4": auth_failure
+
+schema_discovery:
+  help_format: rich
+  introspection_command: "algolia describe [command]"
+  field_docs: true
+  resource_listing: "algolia describe"
+
+pagination:
+  supported: true
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: "algolia objects browse (auto-paginates via BrowseObjects aggregator)"
+
+safety:
+  dry_run: true
+  force_flag: false
+  confirm_skip: "--confirm"
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none
+  agents_md: true
+  claude_md: true
+  agent_detection: true
+
+# --- Display & Discovery ---
+tags: [algolia, search, indices, records, api-keys, rules, synonyms, crawler]
+first_release: "2022-01-01"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "algolia search MOVIES --query 'toy story' --output json"
+  - "algolia objects browse MOVIES --attributesToRetrieve title,overview"
+  - "algolia describe search"
+  - "algolia objects update INDEX --file records.jsonl --dry-run --output json"
+  - "algolia indices delete INDEX --confirm"
+
+notable_features:
+  - "algolia describe: outputs machine-readable JSON schema (v1) for any command — purpose-built for agent introspection"
+  - "Dedicated TestAgentReady e2e suite validates describe and dry-run contracts"
+  - "Both AGENTS.md and CLAUDE.md present in repo for coding agent guidance"
+  - "--dry-run + --output json on mutating commands for safe previewing without side effects"
+  - "Full env-var auth: ALGOLIA_APPLICATION_ID + ALGOLIA_API_KEY for zero-config headless use"
+  - "TTY auto-detection: --confirm required in non-interactive shells for destructive ops"
+  - "NDJSON streaming output: algolia objects browse streams records line-by-line"
+
+alternatives: []
+related: []

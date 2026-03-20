@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Doppler CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: DopplerHQ/cli repo at /tmp/cli-audit-doppler
+# =============================================================================
+
+# --- Identity ---
+slug: doppler-cli
+name: Doppler CLI
+command: doppler
+vendor: Doppler
+description: "Official CLI for Doppler secrets manager — inject secrets into any process, manage projects, configs, and environments from the terminal."
+repo: DopplerHQ/cli
+category: developer-tools
+website: https://www.doppler.com
+
+# --- Technical Metadata ---
+language: go
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: dopplerhq/cli/doppler
+  binary: https://github.com/DopplerHQ/cli/releases/latest
+  curl: https://cli.doppler.com/install.sh
+  docker: dopplerhq/cli
+  pip: null
+  cargo: null
+  scoop: "doppler (bucket: https://github.com/DopplerHQ/scoop-doppler.git)"
+  nix: null
+  apt: "https://packages.doppler.com/public/cli/deb/debian any-version main"
+  other: "WinGet: winget install doppler"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, token_file, config_file]
+  env_var: DOPPLER_TOKEN
+  config_path: "~/.doppler/.doppler.yaml"
+  config_format: yaml
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--yes"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: false
+  resource_listing: "doppler --help"
+
+pagination:
+  supported: true
+  limit_flag: "--number"
+  cursor_flags: ["--page"]
+  auto_paginate: null
+
+safety:
+  dry_run: true
+  force_flag: true
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: "--silent"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [secrets, environment-variables, security, devops, developer-tools]
+first_release: null
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "DOPPLER_TOKEN=dp.st.xxx doppler secrets --json"
+  - "doppler run --token dp.st.xxx -- node server.js"
+  - "doppler secrets set API_KEY=value --yes"
+  - "doppler setup --no-interactive --project myapp --config dev"
+  - "doppler secrets download --format env --no-read-env"
+
+notable_features:
+  - "DOPPLER_TOKEN env var for zero-config headless auth with service tokens"
+  - "Global --json flag for machine-readable output on all listing commands"
+  - "--silent flag suppresses all info messages for clean script output"
+  - "--no-interactive flag on setup and secrets set for fully scripted workflows"
+  - "--yes flag skips destructive confirmations on delete/revoke commands"
+  - "--no-read-env flag prevents config from being read from environment (useful for isolation)"
+  - "Scoped config per directory — different project/config per repo with --scope"
+
+alternatives: []
+related: [github-cli]

@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Axiom CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: axiomhq/cli repo at /tmp/cli-audit-axiom
+# =============================================================================
+
+# --- Identity ---
+slug: axiom-cli
+name: Axiom CLI
+command: axiom
+vendor: Axiom
+description: "Query, ingest, and stream observability data with Axiom's APL query language from the command line."
+repo: axiomhq/cli
+category: monitoring-observability
+website: https://axiom.co
+
+# --- Technical Metadata ---
+language: go
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: axiomhq/tap/axiom
+  binary: https://github.com/axiomhq/cli/releases
+  curl: null
+  docker: axiomhq/cli
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "Go: go install github.com/axiomhq/cli/cmd/axiom@latest"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: AXIOM_TOKEN
+  config_path: "~/.axiom.toml"
+  config_format: toml
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "-f json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--force"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: true
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "2": config_load_failure
+
+schema_discovery:
+  help_format: standard
+  introspection_command: "axiom help environment"
+  field_docs: false
+  resource_listing: "axiom dataset list -f json"
+
+pagination:
+  supported: false
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  force_flag: true
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: "--no-spinner"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: true
+  skills_count: 4
+  skills_sh: false
+  mcp_server: none
+  agents_md: true
+  claude_md: true
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [observability, logging, apl, query, ingest, streaming, datasets, otel, tracing]
+first_release: "2026-03-12"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "axiom query \"['http-logs'] | where response == 404 | count\" -f json"
+  - "axiom dataset list -f json"
+  - "cat events.ndjson | axiom ingest my-dataset"
+  - "axiom stream my-dataset -f json"
+  - "AXIOM_TOKEN=xaat-xxx axiom query \"['logs'] | count\""
+
+notable_features:
+  - "AXIOM_TOKEN + AXIOM_ORG_ID env vars for zero-config headless auth"
+  - "TTY auto-detection: skips prompts and browser auth when stdin is not a terminal"
+  - "Claude Code plugin with 4 skills: explore-dataset, find-traces, detect-anomalies, axiom-apl"
+  - "PostToolUse hook nudges agents toward guided skills instead of raw commands"
+  - "-f json flag on all data commands (query, dataset list, stream, annotation list)"
+  - "--force flag skips confirmation on all destructive operations (delete, logout)"
+
+alternatives: []
+related: [github-cli]

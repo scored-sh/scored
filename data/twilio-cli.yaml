@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Twilio CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: twilio/twilio-cli repo at /tmp/cli-audit-twilio + npx twilio-cli v6.2.4
+# =============================================================================
+
+# --- Identity ---
+slug: twilio-cli
+name: Twilio CLI
+command: twilio
+vendor: Twilio
+description: "Manage Twilio accounts, phone numbers, messaging, calls, and all Twilio APIs from the terminal."
+repo: twilio/twilio-cli
+category: communication-email
+website: https://www.twilio.com
+
+# --- Technical Metadata ---
+language: typescript
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: twilio-cli
+  homebrew: twilio/brew/twilio
+  binary: https://github.com/twilio/twilio-cli/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: null
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, token_file, config_file]
+  env_var: TWILIO_ACCOUNT_SID
+  config_path: "~/.twilio-cli/config.json"
+  config_format: json
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "-o json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--force"
+  env_var: TWILIO_ACCOUNT_SID
+  auto_detect_tty: false
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: true
+  codes:
+    "0": success
+    "1": cancelled_or_error
+    "2": unexpected_argument
+
+schema_discovery:
+  help_format: standard
+  introspection_command: "twilio api --help"
+  field_docs: false
+  resource_listing: "twilio api --help"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: ["--page-token"]
+  auto_paginate: "--no-limit"
+
+safety:
+  dry_run: false
+  force_flag: true
+  confirm_skip: "--force"
+  idempotency: false
+
+quiet_mode:
+  flag: "--silent"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: none
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [twilio, sms, voice, messaging, phone-numbers, communication, api, saas]
+first_release: "2019-04-29"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "twilio phone-numbers:list -o json"
+  - "twilio api:core:messages:list --limit 50 -o json"
+  - "twilio api:core:messages:list --no-limit -o json"
+  - "TWILIO_ACCOUNT_SID=AC... TWILIO_API_KEY=SK... TWILIO_API_SECRET=... twilio phone-numbers:list"
+  - "twilio profiles:list -o json"
+
+notable_features:
+  - "JSON output via -o json on all list/fetch commands (oclif standard)"
+  - "Env var auth: TWILIO_ACCOUNT_SID + TWILIO_API_KEY + TWILIO_API_SECRET for zero-config headless use"
+  - "--no-limit flag disables default 50-item cap, auto-paginates through all records"
+  - "--silent flag suppresses all output and logs (shorthand for -l none -o none)"
+  - "Multi-profile support — store multiple Twilio accounts with -p flag switching"
+  - "Full Twilio API coverage via twilio api subcommand tree (generated from OpenAPI spec)"
+
+alternatives: []
+related: []
