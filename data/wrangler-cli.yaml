@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Wrangler CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: cloudflare/workers-sdk monorepo at /tmp/cli-audit-wrangler
+#         constrained to packages/wrangler/ + installed wrangler v4.75.0
+# =============================================================================
+
+# --- Identity ---
+slug: wrangler-cli
+name: Wrangler CLI
+command: wrangler
+vendor: Cloudflare
+description: "Build, test, and deploy Cloudflare Workers, Pages, D1, KV, R2, Queues, and more from the terminal."
+repo: cloudflare/workers-sdk
+category: cloud-infrastructure
+website: https://developers.cloudflare.com/workers/
+
+# --- Technical Metadata ---
+language: typescript
+license: MIT OR Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: wrangler
+  homebrew: null                        # No official Cloudflare brew formula (Erlang's "wrangler" occupies the name)
+  binary: https://github.com/cloudflare/workers-sdk/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "npx wrangler (zero-install via npx)"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, oauth_browser, config_file]
+  env_var: CLOUDFLARE_API_TOKEN
+  config_path: "~/.wrangler"            # XDG path via xdg-app-paths; legacy ~/.wrangler honored
+  config_format: json
+  headless: true                        # CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID = zero-browser auth
+  multi_profile: false                  # No --profile flag; single active token/config
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag                            # --json flag present on most list/read commands
+  flag: "--json"
+  field_selection: false                # No field-level filtering (no --jq equivalent)
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true                  # CLOUDFLARE_API_TOKEN + ci-info detection → full headless
+  skip_prompts_flag: null               # No global --yes flag; individual commands handle prompts contextually
+  env_var: null                         # No single env var to disable all prompts; relies on TTY + CI detection
+  auto_detect_tty: true                 # isInteractive() + isNonInteractiveOrCI() checks ci-info + TTY
+
+errors:
+  structured: false                     # Errors are text; JsonFriendlyFatalError exists for --json mode but not standard
+  format: text
+  has_error_codes: false                # FatalError.code exists internally but not a published typed taxonomy
+
+exit_codes:
+  documented: false                     # No formal exit code table in docs
+  typed: false                          # FatalError.code is optional/internal; effectively always 0 or 1
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard                 # Yargs-generated help; emoji-decorated but machine-parseable
+  introspection_command: null
+  field_docs: false
+  resource_listing: "wrangler --help"
+
+pagination:
+  supported: true                       # Cursor pagination in vectorize list (--cursor); KV key list has --prefix
+  limit_flag: null                      # No consistent --limit across commands
+  cursor_flags: ["--cursor"]            # Confirmed in vectorize list and source
+  auto_paginate: null
+
+safety:
+  dry_run: true                         # wrangler deploy --dry-run and wrangler delete --dry-run confirmed
+  force_flag: true                      # wrangler delete --force confirmed
+  confirm_skip: null                    # No global skip-confirm flag; TTY absence suppresses some prompts
+  idempotency: false
+
+quiet_mode:
+  flag: null                            # No --quiet or --silent flag
+  env_var: "WRANGLER_LOG"              # WRANGLER_LOG=none suppresses all output (logger level "none" = -1)
+
+agent_ecosystem:
+  skill_md: false                       # No SKILL.md in root or packages/wrangler/
+  skills_count: null
+  skills_sh: false                      # Not on skills.sh as of audit date
+  mcp_server: none                      # No MCP server in repo; no community MCP found
+  agents_md: true                       # AGENTS.md at repo root AND packages/wrangler/AGENTS.md — detailed agent guidance
+  claude_md: true                       # CLAUDE.md at repo root (delegates to @AGENTS.md)
+  agent_detection: true                 # detectAgenticEnvironment() from am-i-vibing in metrics-dispatcher.ts; detects claude-code, cursor-agent, etc.
+
+# --- Display & Discovery ---
+tags: [cloudflare, workers, serverless, edge, kv, r2, d1, pages, wasm, typescript]
+first_release: "2021-10-01"            # v0.0.5 era; workers-sdk repo created late 2021 # unverified exact date
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "CLOUDFLARE_API_TOKEN=xxx wrangler deploy --dry-run"
+  - "wrangler d1 execute my-db --command 'SELECT * FROM users' --json"
+  - "wrangler deployments list --json"
+  - "wrangler secret list --format json"
+  - "WRANGLER_LOG=none wrangler kv key list --binding MY_KV --json"
+
+notable_features:
+  - "CLOUDFLARE_API_TOKEN env var enables zero-browser headless auth for CI/agents"
+  - "am-i-vibing agent detection: records claude-code, cursor-agent etc. in telemetry"
+  - "AGENTS.md + CLAUDE.md in repo root give coding agents full architecture context"
+  - "wrangler deploy --dry-run for safe preview without deploying"
+  - "WRANGLER_LOG=none suppresses all output; --json on most list/read commands"
+  - "isNonInteractiveOrCI() via ci-info auto-adapts behavior in CI pipelines"
+
+alternatives: []
+related: [vercel-cli, stripe-cli]

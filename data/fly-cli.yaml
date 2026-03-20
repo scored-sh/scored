@@ -1,0 +1,125 @@
+# =============================================================================
+# scored.sh — CLI Entry: Fly.io CLI (fly)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: superfly/flyctl repo at /tmp/cli-audit-flyctl + installed fly v0.4.25
+# =============================================================================
+
+# --- Identity ---
+slug: fly-cli
+name: Fly.io CLI
+command: fly
+vendor: Fly.io
+description: "Deploy and manage full-stack apps and databases on Fly.io — machines, volumes, secrets, Postgres, Redis, and more."
+repo: superfly/flyctl
+category: cloud-infrastructure
+website: https://fly.io
+
+# --- Technical Metadata ---
+language: go
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: flyctl
+  binary: https://github.com/superfly/flyctl/releases
+  curl: https://fly.io/install.sh
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "PowerShell: iwr https://fly.io/install.ps1 -useb | iex"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: FLY_API_TOKEN
+  config_path: "~/.fly/config.yml"
+  config_format: yaml
+  headless: true
+  multi_profile: false
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "-j / --json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--yes"
+  env_var: FLY_JSON
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: "fly help"
+  field_docs: false
+  resource_listing: "fly help"
+
+pagination:
+  supported: false
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  force_flag: true
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: "-q / --quiet"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: built_in
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [fly-io, cloud, deployment, machines, postgres, redis, paas, infrastructure]
+first_release: "2019-01-01"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "fly apps list -j"
+  - "fly machine list --app my-app -j"
+  - "fly deploy --yes --detach"
+  - "fly mcp server --claude"
+  - "fly secrets list -j --app my-app"
+
+notable_features:
+  - "Built-in MCP server: fly mcp server — native Claude/Cursor/VS Code integration"
+  - "FLY_API_TOKEN env var + -t flag for fully headless auth in CI/CD"
+  - "-j/--json flag available on most list/status commands"
+  - "TTY-aware: uses go-isatty for terminal detection"
+  - "--yes/-y flag to skip confirmations on destructive ops"
+  - "MCP wrap mode: Dockerfile.mcp ships flyctl as an MCP stdio server container"
+
+alternatives: []
+related: [vercel-cli, supabase-cli]

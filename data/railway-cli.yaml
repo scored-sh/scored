@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Railway CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: railwayapp/cli repo at /tmp/cli-audit-railway + npx @railway/cli v4.33.0
+# =============================================================================
+
+# --- Identity ---
+slug: railway-cli
+name: Railway CLI
+command: railway
+vendor: Railway
+description: "Deploy and manage Railway cloud infrastructure from the terminal — services, variables, deployments, logs, and a built-in MCP server."
+repo: railwayapp/cli
+category: cloud-infrastructure
+website: https://railway.app
+
+# --- Technical Metadata ---
+language: rust
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: "@railway/cli"
+  homebrew: railway
+  binary: https://github.com/railwayapp/cli/releases
+  curl: "https://cli.new (bash <(curl -fsSL cli.new))"
+  docker: ghcr.io/railwayapp/cli:latest
+  pip: null
+  cargo: "railwayapp (cargo install railwayapp --locked)"
+  scoop: railway
+  nix: null
+  apt: null
+  other: "AUR: paru -S railwayapp-cli"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, oauth_browser, token_file]
+  env_var: RAILWAY_TOKEN
+  config_path: "~/.railway/config.json"
+  config_format: json
+  headless: true
+  multi_profile: false
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--yes"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "2": argument_error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: false
+  resource_listing: "railway list"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: true
+  force_flag: false
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: "--silent"
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: built_in
+  agents_md: false
+  claude_md: true
+  agent_detection: true
+
+# --- Display & Discovery ---
+tags: [cloud, deployment, paas, infrastructure, devops, railway, ci-cd, environments, logs, variables]
+first_release: "2021-03-01"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "railway mcp  # Start built-in MCP server for AI agent access"
+  - "RAILWAY_TOKEN=xxx railway variable list --json --service backend"
+  - "railway up --ci --json  # Deploy in CI mode with JSON log output"
+  - "railway logs --json --lines 50 --filter '@level:error'"
+  - "railway deployment list --limit 100 --json"
+
+notable_features:
+  - "Built-in MCP server (railway mcp) — 30+ tools for full infra management by AI agents"
+  - "RAILWAY_TOKEN + RAILWAY_API_TOKEN for zero-config headless auth in CI"
+  - "Auto TTY detection: suppresses spinners/updates when stdout is not a terminal"
+  - "Destructive ops require confirm:true in MCP tools (remove_service, remove_volume, remove_bucket)"
+  - "CLAUDE.md in repo for Claude Code integration guidance"
+  - "CI=true auto-detected to enable CI mode behavior"
+
+alternatives: [render-cli, fly-cli]
+related: [github-cli, stripe-cli]

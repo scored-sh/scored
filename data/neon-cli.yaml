@@ -1,0 +1,125 @@
+# =============================================================================
+# scored.sh — CLI Entry: Neon CLI (neonctl)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: neondatabase/neonctl repo at /tmp/cli-audit-neonctl + npx neonctl v2.22.0
+# =============================================================================
+
+# --- Identity ---
+slug: neon-cli
+name: Neon CLI
+command: neonctl
+vendor: Neon
+description: "Manage Neon Serverless Postgres from the terminal — create projects, branches, databases, roles, and get connection strings."
+repo: neondatabase/neonctl
+category: databases
+website: https://neon.tech
+
+# --- Technical Metadata ---
+language: typescript
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: neonctl
+  homebrew: neonctl
+  binary: https://github.com/neondatabase/neonctl/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: null
+
+# --- Authentication ---
+auth:
+  methods: [api_key_flag, oauth_browser, config_file]
+  env_var: NEON_API_KEY
+  config_path: "~/.config/neonctl/credentials.json"
+  config_format: json
+  headless: true
+  multi_profile: false
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--output json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: null
+  env_var: CI
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: false
+  resource_listing: "neonctl --help"
+
+pagination:
+  supported: true
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: "auto (internal cursor loop on projects list)"
+
+safety:
+  dry_run: false
+  force_flag: false
+  confirm_skip: null
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: separate_repo
+  agents_md: false
+  claude_md: false
+  agent_detection: true
+
+# --- Display & Discovery ---
+tags: [postgres, database, serverless, branching, neon, cloud]
+first_release: "2023-07-18"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "neonctl projects list --output json --api-key $NEON_API_KEY"
+  - "neonctl branches create --name feature-branch --project-id <id> --output json"
+  - "neonctl connection-string --branch main --output json"
+  - "neonctl init --agent claude"
+  - "neonctl databases list --project-id <id> --output json"
+
+notable_features:
+  - "Three output formats: json, yaml, table — global -o/--output flag on every command"
+  - "NEON_API_KEY env var + --api-key flag for fully headless auth"
+  - "CI env detection: blocks interactive auth and strips chalk formatting automatically"
+  - "neonctl init --agent [cursor|copilot|claude] configures Neon MCP server in AI editors"
+  - "Separate mcp-server-neon repo provides a full MCP server for agent tool use"
+  - "Auto-pagination on projects list (internal cursor loop, no manual flag needed)"
+
+alternatives: []
+related: []
