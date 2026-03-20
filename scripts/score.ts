@@ -112,13 +112,13 @@ interface GeneratedCLI extends CLIData {
 
 function scoreJsonOutput(cli: CLIData): number {
   const typeScores: Record<string, number> = {
-    default: 15,
-    flag: 10,
-    partial: 5,
+    default: 14,
+    flag: 13,     // agents just add --json, trivial difference
+    partial: 6,
     none: 0,
   };
   let score = typeScores[cli.json_output.type] ?? 0;
-  if (cli.json_output.field_selection) score += 3;
+  if (cli.json_output.field_selection) score += 4;
   if (cli.json_output.jq_builtin) score += 2;
   return Math.min(score, 20);
 }
@@ -140,13 +140,12 @@ function scoreAuth(cli: CLIData): number {
   if (methods.includes("api_key_flag")) score += 2;
   if (methods.includes("config_file") || methods.includes("token_file"))
     score += 2;
-  if (methods.includes("service_account")) score += 1;
-  if (cli.auth.multi_profile) score += 2;
-  return Math.min(score, 15);
+  if (cli.auth.multi_profile) score += 1;
+  return Math.min(score, 13);
 }
 
 function scoreErrors(cli: CLIData): number {
-  if (!cli.errors.structured) return 0;
+  if (!cli.errors.structured) return 2; // floor: every CLI returns something on error
   let score = 6;
   if (cli.errors.format === "json") score += 3;
   if (cli.errors.has_error_codes) score += 3;
@@ -154,42 +153,43 @@ function scoreErrors(cli: CLIData): number {
 }
 
 function scoreExitCodes(cli: CLIData): number {
-  if (!cli.exit_codes.documented) return 0;
-  if (cli.exit_codes.typed) return 5;
-  return 2;
+  if (!cli.exit_codes.documented) return 1; // floor: every CLI returns 0/1
+  let score = 3;
+  if (cli.exit_codes.typed) score += 3;
+  return Math.min(score, 6);
 }
 
 function scoreSchemaDiscovery(cli: CLIData): number {
   const helpScores: Record<string, number> = {
-    json: 4,
-    rich: 3,
+    json: 3,
+    rich: 2,
     structured: 2,
     standard: 1,
   };
   let score = helpScores[cli.schema_discovery.help_format] ?? 1;
-  if (cli.schema_discovery.introspection_command) score += 4;
+  if (cli.schema_discovery.introspection_command) score += 2;
   if (cli.schema_discovery.field_docs) score += 2;
   if (cli.schema_discovery.resource_listing) score += 1;
-  return Math.min(score, 10);
+  return Math.min(score, 8);
 }
 
 function scorePagination(cli: CLIData): number {
   if (!cli.pagination.supported) return 0;
-  let score = 1;
+  let score = 2;
   if (cli.pagination.limit_flag) score += 1;
   if (cli.pagination.cursor_flags && cli.pagination.cursor_flags.length > 0)
     score += 2;
   if (cli.pagination.auto_paginate) score += 1;
-  return Math.min(score, 5);
+  return Math.min(score, 6);
 }
 
 function scoreSafety(cli: CLIData): number {
   let score = 0;
-  if (cli.safety.dry_run) score += 3;
-  if (cli.safety.force_flag) score += 2;
-  if (cli.safety.confirm_skip) score += 1;
-  if (cli.safety.idempotency) score += 2;
-  return Math.min(score, 8);
+  if (cli.safety.dry_run) score += 4;
+  if (cli.safety.force_flag) score += 3;
+  if (cli.safety.confirm_skip) score += 2;
+  if (cli.safety.idempotency) score += 3;
+  return Math.min(score, 12);
 }
 
 function scoreAgentEcosystem(cli: CLIData): number {
@@ -201,25 +201,18 @@ function scoreAgentEcosystem(cli: CLIData): number {
     none: 0,
   };
   score += mcpScores[cli.agent_ecosystem.mcp_server] ?? 0;
-  if (cli.agent_ecosystem.skill_md) score += 2;
-  if (cli.agent_ecosystem.skills_sh) score += 1;
-  if (
-    cli.agent_ecosystem.skills_count &&
-    cli.agent_ecosystem.skills_count >= 50
-  )
-    score += 1;
+  if (cli.agent_ecosystem.claude_md) score += 2;
   if (cli.agent_ecosystem.agents_md) score += 1;
-  if (cli.agent_ecosystem.claude_md) score += 1;
   if (cli.agent_ecosystem.agent_detection) score += 1;
-  return Math.min(score, 10);
+  return Math.min(score, 8);
 }
 
 function computeGrade(total: number): { grade: string; label: string } {
-  if (total >= 90) return { grade: "S", label: "Agent-Native" };
-  if (total >= 75) return { grade: "A", label: "Agent-Ready" };
-  if (total >= 60) return { grade: "B", label: "Agent-Compatible" };
-  if (total >= 45) return { grade: "C", label: "Agent-Usable" };
-  if (total >= 30) return { grade: "D", label: "Agent-Difficult" };
+  if (total >= 82) return { grade: "S", label: "Agent-Native" };
+  if (total >= 68) return { grade: "A", label: "Agent-Ready" };
+  if (total >= 52) return { grade: "B", label: "Agent-Compatible" };
+  if (total >= 38) return { grade: "C", label: "Agent-Usable" };
+  if (total >= 22) return { grade: "D", label: "Agent-Difficult" };
   return { grade: "F", label: "Not Agent-Friendly" };
 }
 
