@@ -1,0 +1,130 @@
+# =============================================================================
+# scored.sh — CLI Entry: Google Workspace CLI (gws)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: googleworkspace/cli repo at /tmp/cli-audit-gws + installed gws v0.18.1
+# =============================================================================
+
+# --- Identity ---
+slug: google-workspace-cli
+name: Google Workspace CLI
+command: gws
+vendor: Google
+description: "One CLI for all of Google Workspace — Drive, Gmail, Calendar, Sheets, Docs, and more. Dynamic command surface from Google Discovery Service. Built for humans and AI agents."
+repo: googleworkspace/cli
+category: productivity-workspace
+website: https://workspace.google.com
+
+# --- Technical Metadata ---
+language: rust
+license: Apache-2.0
+official: false  # Repo README explicitly states: "This is not an officially supported Google product."
+
+# --- Install Methods ---
+install:
+  npm: "@googleworkspace/cli"
+  homebrew: googleworkspace-cli
+  binary: https://github.com/googleworkspace/cli/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: "https://github.com/googleworkspace/cli"
+  scoop: null
+  nix: "github:googleworkspace/cli"
+  apt: null
+  other: null
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, oauth_browser, service_account, config_file]
+  env_var: GOOGLE_WORKSPACE_CLI_TOKEN
+  config_path: "~/.config/gws/credentials.json"
+  config_format: json
+  headless: true   # GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE + service account support; export flow for CI
+  multi_profile: false
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: default   # JSON is the default output format; also selectable via --format json
+  flag: "--format json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true   # Service account + env var token + exported credentials all work without browser
+  skip_prompts_flag: null
+  env_var: GOOGLE_WORKSPACE_CLI_TOKEN
+  auto_detect_tty: false
+
+errors:
+  structured: true   # Errors output as JSON object {"error": {"code":..., "message":..., "reason":...}} on stdout
+  format: mixed      # JSON on stdout, human text on stderr simultaneously
+  has_error_codes: true   # "reason" field: validationError, etc.
+
+exit_codes:
+  documented: true
+  typed: true
+  codes:
+    "0": "Success"
+    "1": "API error — Google returned a 4xx/5xx response"
+    "2": "Auth error — credentials missing, expired, or invalid"
+    "3": "Validation error — bad arguments, unknown service, invalid flag"
+    "4": "Discovery error — could not fetch the API schema document"
+    "5": "Internal error — unexpected failure"
+
+schema_discovery:
+  help_format: rich   # --help dynamically built from Google Discovery Service; shows all resources+methods
+  introspection_command: "gws schema <service.resource.method>"
+  field_docs: true   # gws schema returns full parameter types, descriptions, required flags
+  resource_listing: "gws <service> --help"
+
+pagination:
+  supported: true
+  limit_flag: "--page-limit"
+  cursor_flags: null
+  auto_paginate: "--page-all"   # Streams one JSON line per page as NDJSON
+
+safety:
+  dry_run: true    # --dry-run returns full request preview as JSON without calling the API
+  force_flag: false
+  confirm_skip: null
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: true     # 93 SKILL.md files in skills/ directory, one per service + helper workflows
+  skills_count: 93
+  skills_sh: false   # No evidence of skills.sh publication
+  mcp_server: none
+  agents_md: true    # AGENTS.md present with full architecture, security checklist, input validation rules for AI callers
+  claude_md: true    # CLAUDE.md present (delegates to AGENTS.md)
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [google-workspace, gmail, drive, sheets, calendar, docs, chat, productivity, oauth2, discovery-api, ai-agent, rust]
+first_release: null   # Shallow clone — earliest tag in CHANGELOG is 0.1.1; repo launched ~early 2026
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "gws drive files list --params '{\"pageSize\": 10}'"
+  - "gws gmail +send --to alice@example.com --subject \"Hello\" --body \"Hi there\""
+  - "gws schema drive.files.list"
+  - "gws drive files list --params '{\"pageSize\": 100}' --page-all | jq -r '.files[].name'"
+  - "gws drive files create --json '{\"name\": \"report.pdf\"}' --upload ./report.pdf --dry-run"
+
+notable_features:
+  - "JSON-first: all output (success and errors) is structured JSON by default — no parsing needed"
+  - "Dynamic command surface built from Google Discovery Service at runtime — always up to date"
+  - "93 SKILL.md agent skills + gemini-extension.json for native Gemini CLI integration"
+  - "gws schema command for full method introspection: params, types, required fields"
+  - "--dry-run returns full request preview as JSON: URL, method, query params, body"
+  - "Typed exit codes (0-5) for every error category + structured error JSON on stdout"
+  - "Model Armor integration: --sanitize flag to screen API responses for prompt injection"
+
+alternatives: []
+related: [github-cli]
