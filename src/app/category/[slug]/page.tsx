@@ -30,7 +30,6 @@ const SCORING_DIMENSIONS = [
   "Exit Codes",
   "Schema Discovery",
   "Pagination",
-  "Field Selection",
   "Safety Rails",
   "Agent Ecosystem",
 ];

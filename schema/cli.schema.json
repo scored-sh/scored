@@ -222,15 +222,12 @@
         "type": {
           "type": "string",
           "enum": [
-            "default_json",
-            "auto_pipe",
-            "flag_json",
-            "flag_format",
-            "flag_output",
+            "default",
+            "flag",
             "partial",
             "none"
           ],
-          "description": "How the CLI produces JSON output."
+          "description": "How the CLI produces JSON output. default = JSON by default or auto-pipe. flag = via --json/--format/--output."
         },
         "flag": {
           "type": ["string", "null"],
@@ -367,13 +364,17 @@
     },
     "safety": {
       "type": "object",
-      "required": ["dry_run", "idempotency"],
+      "required": ["dry_run", "force_flag", "idempotency"],
       "additionalProperties": false,
       "description": "Safety rails for agent usage.",
       "properties": {
         "dry_run": {
           "type": "boolean",
           "description": "Has --dry-run or equivalent preview flag?"
+        },
+        "force_flag": {
+          "type": "boolean",
+          "description": "Requires --force for destructive operations?"
         },
         "confirm_skip": {
           "type": ["string", "null"],

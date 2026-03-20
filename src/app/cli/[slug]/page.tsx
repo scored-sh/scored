@@ -40,7 +40,6 @@ const SCORE_LABELS: Record<string, string> = {
   exit_codes: "Exit Codes",
   schema_discovery: "Schema Discovery",
   pagination: "Pagination",
-  field_selection: "Field Selection",
   safety_rails: "Safety Rails",
   agent_ecosystem: "Agent Ecosystem",
 };
@@ -49,12 +48,11 @@ const SCORE_MAX: Record<string, number> = {
   json_output: 20,
   non_interactive: 15,
   auth_automation: 15,
-  structured_errors: 10,
+  structured_errors: 12,
   exit_codes: 5,
   schema_discovery: 10,
   pagination: 5,
-  field_selection: 5,
-  safety_rails: 5,
+  safety_rails: 8,
   agent_ecosystem: 10,
 };
 

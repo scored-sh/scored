@@ -57,7 +57,6 @@ export interface CLIDetail {
     exit_codes: number;
     schema_discovery: number;
     pagination: number;
-    field_selection: number;
     safety_rails: number;
     agent_ecosystem: number;
   };

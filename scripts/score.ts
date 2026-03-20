@@ -61,6 +61,7 @@ interface CLIData {
   };
   safety: {
     dry_run: boolean;
+    force_flag: boolean;
     confirm_skip?: string | null;
     idempotency: boolean;
   };
@@ -95,7 +96,6 @@ interface Scores {
   exit_codes: number;
   schema_discovery: number;
   pagination: number;
-  field_selection: number;
   safety_rails: number;
   agent_ecosystem: number;
 }
@@ -112,11 +112,8 @@ interface GeneratedCLI extends CLIData {
 
 function scoreJsonOutput(cli: CLIData): number {
   const typeScores: Record<string, number> = {
-    default_json: 15,
-    auto_pipe: 15,
-    flag_json: 10,
-    flag_format: 10,
-    flag_output: 10,
+    default: 15,
+    flag: 10,
     partial: 5,
     none: 0,
   };
@@ -150,10 +147,10 @@ function scoreAuth(cli: CLIData): number {
 
 function scoreErrors(cli: CLIData): number {
   if (!cli.errors.structured) return 0;
-  let score = 5;
-  if (cli.errors.format === "json") score += 2;
+  let score = 6;
+  if (cli.errors.format === "json") score += 3;
   if (cli.errors.has_error_codes) score += 3;
-  return Math.min(score, 10);
+  return Math.min(score, 12);
 }
 
 function scoreExitCodes(cli: CLIData): number {
@@ -186,20 +183,13 @@ function scorePagination(cli: CLIData): number {
   return Math.min(score, 5);
 }
 
-function scoreFieldSelection(cli: CLIData): number {
-  if (!cli.json_output.field_selection) return 0;
-  let score = 3;
-  if (cli.json_output.jq_builtin) score += 1;
-  if (cli.schema_discovery.field_docs) score += 1;
-  return Math.min(score, 5);
-}
-
 function scoreSafety(cli: CLIData): number {
   let score = 0;
   if (cli.safety.dry_run) score += 3;
+  if (cli.safety.force_flag) score += 2;
   if (cli.safety.confirm_skip) score += 1;
-  if (cli.safety.idempotency) score += 1;
-  return Math.min(score, 5);
+  if (cli.safety.idempotency) score += 2;
+  return Math.min(score, 8);
 }
 
 function scoreAgentEcosystem(cli: CLIData): number {
@@ -242,7 +232,6 @@ function scoreCLI(cli: CLIData): GeneratedCLI {
     exit_codes: scoreExitCodes(cli),
     schema_discovery: scoreSchemaDiscovery(cli),
     pagination: scorePagination(cli),
-    field_selection: scoreFieldSelection(cli),
     safety_rails: scoreSafety(cli),
     agent_ecosystem: scoreAgentEcosystem(cli),
   };
@@ -297,7 +286,6 @@ for (const file of files) {
     String(result.scores.exit_codes).padStart(4),
     String(result.scores.schema_discovery).padStart(4),
     String(result.scores.pagination).padStart(4),
-    String(result.scores.field_selection).padStart(4),
     String(result.scores.safety_rails).padStart(4),
     String(result.scores.agent_ecosystem).padStart(4),
     String(result.total).padStart(5),
@@ -337,7 +325,6 @@ const header = [
   "Exit",
   "Disc",
   "Page",
-  "Fld ",
   "Safe",
   "Eco ",
   "Total",

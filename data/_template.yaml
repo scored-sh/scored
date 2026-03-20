@@ -50,8 +50,7 @@ auth:
 # scripts/score.ts reads these to compute scores at build time.
 
 json_output:
-  type: none                          # default_json | auto_pipe | flag_json | flag_format |
-                                      #   flag_output | partial | none
+  type: none                          # default | flag | partial | none
   flag: null                          # The actual flag (e.g., "--json", "--format json")
   field_selection: false              # Can select specific fields? (--json field1,field2)
   jq_builtin: false                   # Has built-in jq/filter? (gh --jq)
@@ -86,6 +85,7 @@ pagination:
 
 safety:
   dry_run: false                      # Has --dry-run or preview mode?
+  force_flag: false                   # Requires --force for destructive ops?
   confirm_skip: null                  # Flag to skip destructive confirmations
   idempotency: false                  # Supports idempotency keys?
 

@@ -51,6 +51,7 @@ pagination:
 
 safety:
   dry_run: false
+  force_flag: false
   idempotency: false
 
 agent_ecosystem:
