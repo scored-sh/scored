@@ -1,0 +1,125 @@
+# =============================================================================
+# scored.sh — CLI Entry: Supabase CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: supabase/cli repo at /tmp/cli-audit-supabase + installed supabase v2.75.0
+# =============================================================================
+
+# --- Identity ---
+slug: supabase-cli
+name: Supabase CLI
+command: supabase
+vendor: Supabase
+description: "Manage Supabase projects locally and remotely — databases, migrations, edge functions, auth, storage, and more."
+repo: supabase/cli
+category: databases
+website: https://supabase.com
+
+# --- Technical Metadata ---
+language: go
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: supabase
+  homebrew: supabase/tap/supabase
+  binary: https://github.com/supabase/cli/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: supabase
+  nix: null
+  apt: null
+  other: "Linux packages: deb, rpm, apk via GitHub releases"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: SUPABASE_ACCESS_TOKEN
+  config_path: "~/.supabase"
+  config_format: json
+  headless: true                     # --token flag + SUPABASE_ACCESS_TOKEN env var
+  multi_profile: true                # --profile flag supports named profiles
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag                         # Global -o/--output flag with json, toml, yaml, env, pretty
+  flag: "-o json"
+  field_selection: false             # No field selection like gh --json field1,field2
+  jq_builtin: false                  # No built-in jq filter
+
+non_interactive:
+  fully_headless: true               # SUPABASE_ACCESS_TOKEN + --yes + TTY detection
+  skip_prompts_flag: "--yes"         # Global --yes flag answers yes to all prompts
+  env_var: null                      # No dedicated env var, but SUPABASE_ACCESS_TOKEN handles auth
+  auto_detect_tty: true              # term.IsTerminal checks throughout; login skips browser in non-TTY
+
+errors:
+  structured: false                  # Text error messages, not JSON error objects
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: false
+  typed: false                       # Only 0 (success) and 1 (error) observed
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard              # Cobra standard help with command groups
+  introspection_command: null
+  field_docs: false
+  resource_listing: null
+
+pagination:
+  supported: false                   # No --limit, --cursor, or --page flags found
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: true                      # --dry-run on db push and db dump
+  force_flag: false                  # No --force flag on destructive operations
+  confirm_skip: "--yes"              # Global --yes skips destructive confirmations
+  idempotency: false
+
+quiet_mode:
+  flag: null                         # No --quiet or -q flag
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: community              # Community MCP servers exist (supabase-community/supabase-mcp)
+  agents_md: false
+  claude_md: false
+  agent_detection: true              # Built-in agent detection: checks CLAUDE_CODE, CURSOR_AGENT, AI_AGENT, COPILOT_MODEL, etc. + --agent flag override in source
+
+# --- Display & Discovery ---
+tags: [supabase, postgres, database, edge-functions, auth, storage, migrations, baas, firebase-alternative]
+first_release: "2021-07-01"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "supabase status -o json"
+  - "supabase db push --dry-run"
+  - "supabase functions deploy my-function --project-ref abc123"
+  - "supabase migration list -o json --project-ref abc123"
+  - "supabase login --token $SUPABASE_ACCESS_TOKEN"
+
+notable_features:
+  - "Global -o flag: json, toml, yaml, env, pretty output formats on most commands"
+  - "SUPABASE_ACCESS_TOKEN env var for fully headless CI/agent authentication"
+  - "Built-in AI agent detection (Claude Code, Cursor, Copilot, Codex, Devin, etc.) with --agent override"
+  - "TTY-aware: auto-skips browser login and interactive prompts in non-TTY environments"
+  - "--dry-run on db push/dump for safe migration previews"
+  - "--yes global flag to skip all confirmation prompts"
+
+alternatives: []
+related: []

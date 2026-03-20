@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Resend CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: resend/resend-cli repo at /tmp/cli-audit-resend-cli + npx resend-cli v1.5.1
+# =============================================================================
+
+# --- Identity ---
+slug: resend-cli
+name: Resend CLI
+command: resend
+vendor: Resend
+description: "Send emails, manage domains, contacts, broadcasts, templates, webhooks, and API keys from the terminal."
+repo: resend/resend-cli
+category: email
+website: https://resend.com
+
+# --- Technical Metadata ---
+language: typescript
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: resend-cli
+  homebrew: resend/cli/resend
+  binary: https://github.com/resend/resend-cli/releases
+  curl: https://resend.com/install.sh
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "PowerShell (Windows): irm https://resend.com/install.ps1 | iex"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, config_file]
+  env_var: RESEND_API_KEY
+  config_path: "~/.config/resend/credentials.json"
+  config_format: json
+  headless: true                    # --api-key flag or RESEND_API_KEY env, login --key for non-interactive
+  multi_profile: true               # --profile flag, RESEND_PROFILE env, auth switch/rename/remove
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: default                     # Auto-JSON when stdout is not TTY; --json flag also available
+  flag: "--json"
+  field_selection: false            # No field selection support
+  jq_builtin: false                 # No built-in jq filter
+
+non_interactive:
+  fully_headless: true              # All commands work with flags only, TTY detection, CI env detection
+  skip_prompts_flag: "--yes"        # Required on all delete commands in non-interactive mode
+  env_var: null                     # No explicit prompt-disable env var, but CI/GITHUB_ACTIONS detected
+  auto_detect_tty: true             # isInteractive() checks stdin/stdout TTY, CI, GITHUB_ACTIONS, TERM=dumb
+
+errors:
+  structured: true                  # {"error":{"message":"...","code":"..."}} on all errors
+  format: json                      # Always JSON error output (both TTY and non-TTY)
+  has_error_codes: true             # auth_error, missing_key, invalid_key_format, send_error, etc.
+
+exit_codes:
+  documented: true                  # Documented in README, SKILL.md, and per-command help
+  typed: true                       # 0 = success, 1 = error, 130 = cancelled (SIGINT)
+  codes:
+    "0": success
+    "1": error
+    "130": cancelled
+
+schema_discovery:
+  help_format: rich                 # Per-command help includes output shapes, error codes, examples, global opts
+  introspection_command: null       # No single reference command
+  field_docs: true                  # Each list/get command documents JSON output shape in --help
+  resource_listing: null            # No resource listing command
+
+pagination:
+  supported: true
+  limit_flag: "--limit"             # 1-100, default 10
+  cursor_flags: ["--after", "--before"]  # Forward and backward cursor pagination
+  auto_paginate: null               # No auto-paginate flag
+
+safety:
+  dry_run: false                    # No --dry-run flag
+  force_flag: true                  # --yes required on all delete/rm commands in non-interactive mode
+  confirm_skip: "--yes"             # Skips destructive confirmation prompts
+  idempotency: false                # No idempotency key support
+
+quiet_mode:
+  flag: "-q, --quiet"              # Suppresses spinners and status output, implies --json
+  env_var: null
+
+agent_ecosystem:
+  skill_md: true                    # skills/resend-cli/SKILL.md with 13 reference files
+  skills_count: 1                   # 1 published skill (resend-cli)
+  skills_sh: false                  # Not on skills.sh (published in npm package)
+  mcp_server: none                  # No MCP server; doctor detects .vscode/mcp.json but CLI itself is not MCP
+  agents_md: false
+  claude_md: false
+  agent_detection: true             # doctor command detects Cursor, Claude Desktop, VS Code, OpenClaw
+
+# --- Display & Discovery ---
+tags: [email, transactional-email, api, developer-tools, broadcasts, webhooks, domains, contacts]
+first_release: "2026-02-18"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "resend emails send --from you@domain.com --to user@example.com --subject 'Hello' --text 'Body'"
+  - "resend doctor --json"
+  - "resend domains create --name example.com --region us-east-1"
+  - "resend broadcasts create --from news@domain.com --subject 'Update' --segment-id <id> --html '<h1>Hi</h1>' --send"
+  - "resend emails list --limit 5 --after <cursor-id> --json"
+
+notable_features:
+  - "Auto-JSON: detects non-TTY and outputs JSON by default — no flag needed for agents"
+  - "Structured errors with typed codes on every command: {error:{message,code}}"
+  - "SKILL.md with 13 reference files — purpose-built for AI agent consumption"
+  - "Multi-profile auth: --profile flag, RESEND_PROFILE env, auth switch/rename/remove"
+  - "--quiet mode suppresses all spinners and implies --json for clean CI/agent pipelines"
+  - "Agent detection in doctor: identifies Cursor, Claude Desktop, VS Code, OpenClaw"
+
+alternatives: []
+related: []

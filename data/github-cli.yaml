@@ -1,0 +1,127 @@
+# =============================================================================
+# scored.sh — CLI Entry: GitHub CLI (gh)
+# =============================================================================
+# Audited: 2026-03-20
+# Source: cli/cli repo at /tmp/cli-audit-gh + installed gh v2.34.0
+# =============================================================================
+
+# --- Identity ---
+slug: github-cli
+name: GitHub CLI
+command: gh
+vendor: GitHub
+description: "GitHub on the command line — manage repos, PRs, issues, releases, actions, and more from the terminal."
+repo: cli/cli
+category: developer-tools
+website: https://cli.github.com
+
+# --- Technical Metadata ---
+language: go
+license: MIT
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: gh
+  binary: https://github.com/cli/cli/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: gh
+  nix: null
+  apt: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+  other: "WinGet: winget install --id GitHub.cli"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, oauth_browser, config_file]
+  env_var: GH_TOKEN
+  config_path: "~/.config/gh/config.yml"
+  config_format: yaml
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag
+  flag: "--json"
+  field_selection: true
+  jq_builtin: true
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--yes"
+  env_var: GH_PROMPT_DISABLED
+  auto_detect_tty: true
+
+errors:
+  structured: false
+  format: text
+  has_error_codes: false
+
+exit_codes:
+  documented: true
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "2": user_cancelled
+    "4": auth_failure
+
+schema_discovery:
+  help_format: rich
+  introspection_command: "gh help reference"
+  field_docs: true
+  resource_listing: "gh help reference"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: null
+  auto_paginate: "--paginate"
+
+safety:
+  dry_run: false
+  force_flag: true
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: community
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [github, git, devops, ci-cd, pull-requests, issues, actions, copilot]
+first_release: "2020-02-12"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "gh pr list --json number,title,author --jq '.[].title'"
+  - "gh api repos/{owner}/{repo}/pulls --paginate --jq '.[].title'"
+  - "gh issue create --title 'Bug' --body 'Details' --label bug"
+  - "gh run watch && gh pr merge --auto"
+  - "gh agent-task create 'Fix the flaky test in auth module'"
+
+notable_features:
+  - "Best-in-class JSON: --json with field selection + built-in --jq filter"
+  - "GH_TOKEN env var for zero-config headless auth"
+  - "GH_PROMPT_DISABLED + TTY detection for fully non-interactive use"
+  - "Typed exit codes: 0 success, 1 error, 2 cancel, 4 auth failure"
+  - "gh api with --paginate for raw API access with auto-pagination"
+  - "Agent task command (preview) for GitHub Copilot coding agents"
+
+alternatives: []
+related: [stripe-cli]

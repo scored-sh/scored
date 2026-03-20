@@ -1,0 +1,125 @@
+# =============================================================================
+# scored.sh — CLI Entry: Stripe CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: stripe/stripe-cli repo at /tmp/cli-audit-stripe-cli + installed stripe v1.35.1
+# =============================================================================
+
+# --- Identity ---
+slug: stripe-cli
+name: Stripe CLI
+command: stripe
+vendor: Stripe
+description: "Build, test, and manage your Stripe integration from the terminal — webhooks, API resources, logs, and fixtures."
+repo: stripe/stripe-cli
+category: payments-finance
+website: https://stripe.com/docs/stripe-cli
+
+# --- Technical Metadata ---
+language: go
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: null
+  homebrew: stripe/stripe-cli/stripe
+  binary: https://github.com/stripe/stripe-cli/releases
+  curl: null
+  docker: stripe/stripe-cli
+  pip: null
+  cargo: null
+  scoop: stripe
+  nix: null
+  apt: null
+  other: "Linux: package repos for deb/rpm — see https://stripe.com/docs/stripe-cli#install"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: STRIPE_API_KEY
+  config_path: "~/.config/stripe/config.toml"
+  config_format: toml
+  headless: true
+  multi_profile: true
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: default
+  flag: null
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true
+  skip_prompts_flag: "--confirm"
+  env_var: null
+  auto_detect_tty: true
+
+errors:
+  structured: true
+  format: json
+  has_error_codes: true
+
+exit_codes:
+  documented: false
+  typed: false
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard
+  introspection_command: null
+  field_docs: false
+  resource_listing: "stripe resources"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"
+  cursor_flags: ["--starting-after", "--ending-before"]
+  auto_paginate: null
+
+safety:
+  dry_run: false
+  force_flag: false
+  confirm_skip: "--confirm"
+  idempotency: true
+
+quiet_mode:
+  flag: null
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false
+  skills_count: null
+  skills_sh: false
+  mcp_server: separate_repo
+  agents_md: false
+  claude_md: true
+  agent_detection: false
+
+# --- Display & Discovery ---
+tags: [stripe, payments, webhooks, billing, subscriptions, fintech, api]
+first_release: "2019-09-16"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "stripe listen --forward-to localhost:3000/webhooks"
+  - "stripe trigger payment_intent.succeeded"
+  - "stripe customers list --limit 10"
+  - "stripe get ch_1EGYgUByst5pquEtjb0EkYha"
+  - "stripe resources"
+
+notable_features:
+  - "JSON output by default for all API resource commands — no flag needed"
+  - "stripe listen: real-time webhook forwarding to localhost for testing"
+  - "stripe trigger: fire any of 100+ webhook events with side-effect objects"
+  - "stripe resources: lists all 90+ API resources for schema discovery"
+  - "--confirm flag skips destructive operation prompts for headless use"
+  - "Idempotency key support via --idempotency flag on write operations"
+
+alternatives: []
+related: [github-cli]

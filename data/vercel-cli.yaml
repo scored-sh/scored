@@ -1,0 +1,126 @@
+# =============================================================================
+# scored.sh — CLI Entry: Vercel CLI
+# =============================================================================
+# Audited: 2026-03-20
+# Source: vercel/vercel monorepo (packages/cli/) + installed vercel v50.9.6
+# =============================================================================
+
+# --- Identity ---
+slug: vercel-cli
+name: Vercel CLI
+command: vercel
+vendor: Vercel
+description: "Deploy, manage, and develop Vercel projects from the terminal — deployments, domains, env vars, and more."
+repo: vercel/vercel
+category: cloud-infrastructure
+website: https://vercel.com
+
+# --- Technical Metadata ---
+language: typescript
+license: Apache-2.0
+official: true
+
+# --- Install Methods ---
+install:
+  npm: vercel
+  homebrew: null
+  binary: https://github.com/vercel/vercel/releases
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: "pnpm i -g vercel"
+
+# --- Authentication ---
+auth:
+  methods: [api_key_env, api_key_flag, oauth_browser, config_file]
+  env_var: VERCEL_TOKEN
+  config_path: "~/.local/share/com.vercel.cli/auth.json"
+  config_format: json
+  headless: true                       # VERCEL_TOKEN env var or --token flag
+  multi_profile: true                  # --scope / vercel switch for team switching
+
+# --- Agent-Readiness Booleans ---
+
+json_output:
+  type: flag                           # --format json on list/integration/alias/domains/certs/crons/webhooks etc; also --json (deprecated)
+  flag: "--format json"
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true                 # --non-interactive global flag, auto-enabled when agent detected via @vercel/detect-agent
+  skip_prompts_flag: "--yes"           # -y/--yes skips confirmation prompts
+  env_var: null
+  auto_detect_tty: true               # TTY detection + AI agent detection (CLAUDE_CODE, CURSOR_TRACE_ID, AI_AGENT, etc.)
+
+errors:
+  structured: true                     # Non-interactive mode returns structured JSON on stdout via outputActionRequired/outputAgentError
+  format: json                         # { status: "error"|"action_required", reason, message, next[] }
+  has_error_codes: true                # Stable reason codes: missing_arguments, payment_required, rate_limited, slug_unavailable, etc.
+
+exit_codes:
+  documented: true                     # Documented in packages/cli/AGENTS.md
+  typed: true
+  codes:
+    "0": success
+    "1": error
+    "2": help_displayed
+
+schema_discovery:
+  help_format: rich                    # Formatted help with subcommands, options, examples
+  introspection_command: "vercel help"
+  field_docs: false
+  resource_listing: "vercel --help"
+
+pagination:
+  supported: true
+  limit_flag: "--limit"               # Number of results per page (default 20, max 100)
+  cursor_flags: ["--next"]            # Timestamp-based cursor for next page
+  auto_paginate: null
+
+safety:
+  dry_run: false                       # Only on vercel upgrade --dry-run, not deployment commands
+  force_flag: true                     # -f/--force on deploy, --safe on rm
+  confirm_skip: "--yes"
+  idempotency: false
+
+quiet_mode:
+  flag: null                           # No global quiet flag; --silent only on vercel api
+  env_var: null
+
+agent_ecosystem:
+  skill_md: true                       # skills/vercel-cli/SKILL.md with decision tree, anti-patterns, reference docs
+  skills_count: 1                      # vercel-cli skill with multiple reference files
+  skills_sh: false
+  mcp_server: built_in                 # vercel mcp command sets up MCP server for agent IDEs (Claude Code, Cursor, VS Code)
+  agents_md: true                      # AGENTS.md in repo root AND packages/cli/AGENTS.md with full agent guide
+  claude_md: true                      # packages/cli/CLAUDE.md (points to AGENTS.md)
+  agent_detection: true                # @vercel/detect-agent package: detects Claude, Cursor, Devin, Codex, Replit, Gemini, Copilot, Augment, etc.
+
+# --- Display & Discovery ---
+tags: [vercel, deployment, serverless, next-js, cloud, ci-cd, domains, dns, env-vars, agent-native]
+first_release: "2020-03-03"
+added_date: "2026-03-20"
+updated_date: "2026-03-20"
+
+notable_commands:
+  - "vercel deploy --prod --yes --token=$VERCEL_TOKEN"
+  - "vercel ls --format json --limit 10"
+  - "vercel env list --format json"
+  - "vercel domains ls --format json"
+  - "vercel mcp --clients 'Claude Code'"
+
+notable_features:
+  - "Agent detection: @vercel/detect-agent auto-detects 12+ AI agents (Claude, Cursor, Devin, Codex, etc.) and enables --non-interactive"
+  - "Structured agent errors: JSON on stdout with status, reason codes, and next[] suggested commands for agents"
+  - "Built-in MCP server: vercel mcp command configures MCP for Claude Code, Cursor, VS Code"
+  - "SKILL.md with decision tree, anti-patterns, and reference docs for agent consumption"
+  - "AGENTS.md with full command structure, testing patterns, and non-interactive mode docs"
+  - "VERCEL_TOKEN env var for zero-config headless auth in CI/agent pipelines"
+
+alternatives: [netlify-cli]
+related: []
