@@ -1,0 +1,108 @@
+slug: elevenlabs-cli
+name: ElevenLabs CLI
+command: elevenlabs
+vendor: ElevenLabs
+description: "Build and manage multimodal AI agents with local configuration files. Agents as code with templates, push/pull sync, and branch support."
+repo: elevenlabs/cli
+category: ai-ml
+website: https://elevenlabs.io
+
+language: typescript
+license: MIT
+official: true
+
+install:
+  npm: "@elevenlabs/cli"
+  homebrew: null
+  binary: null
+  curl: null
+  docker: null
+  pip: null
+  cargo: null
+  scoop: null
+  nix: null
+  apt: null
+  other: null
+
+auth:
+  methods: [api_key_env, config_file]
+  env_var: ELEVENLABS_API_KEY
+  config_path: "~/.elevenlabs/api_key"
+  config_format: null # plain text file, not structured
+  headless: true # env var works without browser
+  multi_profile: false # tested - single key storage
+
+json_output:
+  type: none # tested --json, --format json, --output json — all rejected
+  flag: null
+  field_selection: false
+  jq_builtin: false
+
+non_interactive:
+  fully_headless: true # --no-ui flag, env var auth, --dry-run
+  skip_prompts_flag: "--no-ui" # disables Ink interactive UI (default behavior)
+  env_var: null
+  auto_detect_tty: false # from-source: no isTTY checks found
+
+errors:
+  structured: false # tested - plain text errors ("Error: ...", "error: unknown command")
+  format: text
+  has_error_codes: false # no error codes in output
+
+exit_codes:
+  documented: false # not documented, but consistent behavior
+  typed: false # only 0 and 1 observed
+  codes:
+    "0": success
+    "1": error
+
+schema_discovery:
+  help_format: standard # tested --help — clean Commander.js format
+  introspection_command: null
+  field_docs: true # --help shows flag descriptions
+  resource_listing: "elevenlabs agents list" # lists configured agents
+
+pagination:
+  supported: false # internal cursor pagination not exposed to CLI flags
+  limit_flag: null
+  cursor_flags: null
+  auto_paginate: null
+
+safety:
+  dry_run: true # tested: --dry-run on push/pull commands
+  force_flag: false # no --force flag found
+  confirm_skip: null
+  idempotency: true # push uses hash-based change detection
+
+quiet_mode:
+  flag: null # no --quiet or --silent found
+  env_var: null
+
+agent_ecosystem:
+  skill_md: false # not found
+  skills_count: null
+  skills_sh: false
+  mcp_server: none # mcp references are just tool type enums, not MCP server
+  agents_md: false
+  claude_md: false
+  agent_detection: false
+
+tags: [elevenlabs, ai, agents, voice, tts, conversational-ai, typescript, agents-as-code]
+first_release: "2025-10-22"
+added_date: "2026-03-26"
+updated_date: "2026-03-26"
+
+notable_commands:
+  - "elevenlabs agents init"
+  - "elevenlabs agents add 'Bot' --template customer-service"
+  - "elevenlabs agents push --dry-run"
+  - "elevenlabs agents pull --all --all-branches --no-ui"
+  - "elevenlabs completion bash"
+notable_features:
+  - "Agents as code — local JSON configs synced to ElevenLabs platform"
+  - "--no-ui / --human-friendly toggle for CI/CD vs interactive use"
+  - "--dry-run on push/pull for safe previews"
+  - "Hash-based change detection (only pushes modified configs)"
+  - "Branch support for staging/production agent variants"
+alternatives: []
+related: []
